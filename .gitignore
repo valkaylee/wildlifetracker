@@ -1,0 +1,4 @@
+.DS_Store
+.vscode/
+backend/wildlifetracker/target/
+**/.DS_Store
