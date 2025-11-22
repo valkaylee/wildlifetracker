@@ -1,7 +1,7 @@
-/* 彩色导航栏 */
+
 .navbar {
   width: 100%;
-  background: linear-gradient(90deg, #4f46e5, #6366f1); /* 渐变紫蓝 */
+  background: linear-gradient(90deg, #4f46e5, #6366f1);
   padding: 14px 28px;
   display: flex;
   justify-content: space-between;
