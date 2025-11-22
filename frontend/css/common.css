@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #eef2ff; 
+  line-height: 1.9;
+  color: #1f2937;
+}
+.page-container {
+  max-width: 700px;     /* 控制内容整体宽度 */
+  margin: 40px auto;    /* 自动水平居中 */
+  padding: 0 20px;
+
+}
+h1, h2, h3, h4 {
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: #1e293b;
+  margin-bottom: 18px;
+}
+
+
+button {
+  padding: 12px 25px;
+  background: #6366f1;         /* 彩色按钮 */
+  color: white;
+  border: none;
+  border-radius: 8px;          /* 圆角 */
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 3px 8px rgba(79,70,229,0.25);
+}
+
+button:hover {
+  background: #4f46e5;
+}
+
+
+.card {
+  background: white;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(79,70,229,0.18); /* 淡紫色阴影 */
+  margin-top: 25px;
+}
