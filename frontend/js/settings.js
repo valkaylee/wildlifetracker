@@ -8,13 +8,11 @@ function loadSaved() {
   const role = localStorage.getItem("role") || "usc_undergrad";
   const location = localStorage.getItem("location") || "la";
 
-  // 填入输入框
   document.getElementById("nameInput").value = name;
   document.getElementById("bioInput").value = bio;
   document.getElementById("roleSelect").value = role;
   document.getElementById("locationSelect").value = location;
 
-  // 显示区
   document.getElementById("pName").innerText = name || "(none)";
   document.getElementById("pBio").innerText = bio || "(none)";
   document.getElementById("pRole").innerText = formatRole(role);
