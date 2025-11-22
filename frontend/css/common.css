@@ -10,8 +10,8 @@ body {
   color: #1f2937;
 }
 .page-container {
-  max-width: 700px;     /* 控制内容整体宽度 */
-  margin: 40px auto;    /* 自动水平居中 */
+  max-width: 700px; 
+  margin: 40px auto;  
   padding: 0 20px;
 
 }
@@ -25,10 +25,10 @@ h1, h2, h3, h4 {
 
 button {
   padding: 12px 25px;
-  background: #6366f1;         /* 彩色按钮 */
+  background: #6366f1;  
   color: white;
   border: none;
-  border-radius: 8px;          /* 圆角 */
+  border-radius: 8px;      
   cursor: pointer;
   font-size: 16px;
   box-shadow: 0 3px 8px rgba(79,70,229,0.25);
@@ -43,6 +43,6 @@ button:hover {
   background: white;
   padding: 28px;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(79,70,229,0.18); /* 淡紫色阴影 */
+  box-shadow: 0 4px 16px rgba(79,70,229,0.18);
   margin-top: 25px;
 }
