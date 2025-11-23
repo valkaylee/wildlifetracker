@@ -1,12 +1,10 @@
 package com.team4.wildlifetracker.service;
 
 import com.team4.wildlifetracker.model.Sighting;
-import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.SightingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SightingService {
@@ -17,24 +15,41 @@ public class SightingService {
         this.sightingRepository = sightingRepository;
     }
 
-    public Sighting createSighting(String species, String location, String description, String imageUrl, User user) {
-        Sighting sighting = new Sighting(species, location, description, imageUrl, user);
+    // CREATE
+    public Sighting createSighting(Sighting sighting) {
         return sightingRepository.save(sighting);
     }
 
-    public List<Sighting> getAllSightings() {
+    // READ (single)
+    public Sighting findById(Long id) {
+        return sightingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sighting not found"));
+    }
+
+    // READ (all)
+    public List<Sighting> findAll() {
         return sightingRepository.findAll();
     }
 
-    public Optional<Sighting> getSightingById(Long id) {
-        return sightingRepository.findById(id);
+    // UPDATE
+    public Sighting update(Long id, Sighting updated) {
+        Sighting existing = sightingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sighting not found"));
+
+        existing.setSpecies(updated.getSpecies());
+        existing.setLocation(updated.getLocation());
+        existing.setDescription(updated.getDescription());
+        existing.setImageUrl(updated.getImageUrl());
+        existing.setTimestamp(updated.getTimestamp());
+
+        return sightingRepository.save(existing);
     }
 
-    public List<Sighting> getSightingsByUser(Long userId) {
-        return sightingRepository.findByUserId(userId);
-    }
-
-    public List<Sighting> getSightingsBySpecies(String species) {
-        return sightingRepository.findBySpecies(species);
+    // DELETE
+    public void delete(Long id) {
+        if (!sightingRepository.existsById(id)) {
+            throw new RuntimeException("Sighting not found");
+        }
+        sightingRepository.deleteById(id);
     }
 }
