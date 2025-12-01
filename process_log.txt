@@ -19,3 +19,24 @@ Fix
 Explanation
 
 	-These fixes were necessary to make the static pages visually consistent and functional. The AI-generated templates provided a starting point, but the final UI (spacing, colors, typography, alignment, and page layout) required significant manual adjustments to meet the expected look and to ensure uniformity across all pages.
+
+
+
+
+2. Creating the navbar
+	Prompts: I want to create a navbar. Create a left side navbar with a website name, buttons below, and a signout button at the bottom.
+	Issues: Color was wrong, icons used were simply apple emojis that don't match, and I lots of redundant code.
+	Fix: I manually changed colors, used google icons to replace emojis, and asked AI to make a navbar file and how to
+		use that else where.
+	Explanation: Color and icons is important to make the website like modern and sleek. Most importantly however,
+		previously I would copy paste a long html for each page as navbar. But by creating a navbar file and using
+		a script to import navbar in each page, we can make code a lot cleaner and more organized. Also, modifying navbar
+		doesn't require modifing every file.
+
+3. Improving the navbar
+	Prompts: I wanted navbar to highlight what page the user is currently on. I asked AI to darken buttons based off
+		of the page the user is currently on.
+	Issues: No buttons were highlighted no matter what I clicked.
+	Fix: I found out that AI was checking for the wrong url names, and I simply had to change them to the correct file names
+	Expalantion: This is a super important UI component as users need to be able to see what page they are super easily.
+		Furthermore, by not checking the correct file name, we are unable to ever make the code work unless we fix it.

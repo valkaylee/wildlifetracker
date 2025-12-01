@@ -10,16 +10,8 @@
 
 <body>
 
-  <!-- NAV BAR -->
-  <div class="navbar">
-    <span class="nav-title" onclick="location.href='landing.html'">Wildlife Tracker</span>
-    <div class="nav-right">
-      <a href="landing.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="help.html">Help</a>
-      <a href="settings.html">Settings</a>
-    </div>
-  </div>
+  <!-- NAV BAR (EMPTY — JS WILL FILL IT) -->
+  <div id="navbar"></div>
 
   <div class="page-container">
     <h1>Welcome to Wildlife Tracker</h1>
@@ -29,6 +21,46 @@
       <button onclick="location.href='map.html'">Go to Map</button>
     </div>
   </div>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        // Insert navbar html
+        document.getElementById("navbar").innerHTML = html;
+
+        /* ========== AUTO-HIGHLIGHT ========== */
+        const currentPage = location.pathname.split("/").pop();
+        const navLinks = document.querySelectorAll(".side-nav a");
+
+        navLinks.forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
+            link.classList.add("active");
+          }
+        });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
+      });
+    </script>
 
 </body>
 </html>

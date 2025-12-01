@@ -1,30 +1,121 @@
-
-.navbar {
-  width: 100%;
-  background: linear-gradient(90deg, #4f46e5, #6366f1);
-  padding: 14px 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
+/* Make sizing predictable everywhere inside sidebar */
+.side-nav, .side-nav * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-.nav-title {
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.nav-right a {
+/* ============================================
+   SIDEBAR BASE
+============================================ */
+.side-nav {
+  width: 240px;
+  background: #a53026; /* deep red */
+  height: 100vh;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
   color: white;
-  text-decoration: none;
-  margin-left: 28px;
-  font-size: 17px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+  z-index: 50;
 }
 
-.nav-right a:hover {
-  opacity: 0.8;
+/* ============================================
+   SIDEBAR TITLE
+============================================ */
+.nav-header {
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  padding: 0 16px 28px 16px;
+  line-height: 1.1;
+}
+
+/* ============================================
+   NAV LINKS  (IMPORTANT: excludes auth buttons)
+============================================ */
+
+/* Base link reset */
+.side-nav a {
+  text-decoration: none;
+}
+
+/* Only style actual menu items, NOT auth buttons */
+.side-nav a:not(.auth-btn) {
+  color: white;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  border-radius: 12px;
+  margin: 6px 12px;
+  transition: background 0.18s ease;
+}
+
+.side-nav a:not(.auth-btn) .icon {
+  font-size: 24px;
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover + Active only apply to nav items */
+.side-nav a:not(.auth-btn):hover {
+  background: rgba(255,255,255,0.12);
+}
+
+.side-nav a.active:not(.auth-btn) {
+  background: rgba(0,0,0,0.27);
+  font-weight: 700;
+}
+
+/* ============================================
+   AUTH BUTTONS (BOTTOM)
+============================================ */
+.auth-buttons {
+  margin-top: auto;
+  width: 100%;
+  padding: 26px 16px 34px 16px; /* more bottom breathing room */
+  display: flex;
+  gap: 14px;
+}
+
+/* Shared style */
+.auth-btn {
+  flex: 1;
+  min-width: 0;               /* prevents overflow in flex row */
+  margin: 0;                  /* prevents nav-link margins */
+  padding: 16px 0;
+  border-radius: 18px;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.22s ease, filter 0.22s ease;
+}
+
+/* Login button (yellow) */
+.login-btn {
+  background: #f7cd42;
+  color: #111;
+}
+
+/* Softer hover: small change only, no movement jump */
+.login-btn:hover {
+  filter: brightness(0.97);   /* subtle */
+}
+
+/* Logout button (muted red) */
+.logout-btn {
+  background: #c75a53;
+  color: white;
+}
+
+.logout-btn:hover {
+  filter: brightness(0.96);
 }

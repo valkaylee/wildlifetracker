@@ -1,0 +1,129 @@
+/* Container offset for sidebar */
+.auth-container {
+  margin-left: 240px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main box */
+.auth-box {
+  width: 360px;
+  background: #fff;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  font-family: Inter, sans-serif;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Headers */
+.auth-box h2 {
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+/* Labels & inputs */
+label {
+  display: block;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #b12222;
+}
+
+/* Buttons */
+.primary-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #b12222;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #9a1e1e;
+}
+
+/* Switch links */
+.switch-text {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+.switch-text a {
+  color: #b12222;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switch-text a:hover {
+  text-decoration: underline;
+}
+
+/* hide signup form */
+.hidden {
+  display: none;
+}
+
+/* smooth fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================
+   SIDEBAR SIGN IN / SIGN OUT BUTTON
+   (Only applies inside sidebar)
+============================================ */
+.side-nav .signout-btn {
+  background: #f1c232;
+  color: black;
+  font-weight: bold;
+  padding: 14px 12px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* SIGN IN (white button) */
+.side-nav .signout-btn.signin {
+  background: white;
+  color: black;
+  border: 2px solid #e0e0e0;
+}
+
+.side-nav .signout-btn.signin {
+  transition: filter 0.2s ease, background 0.2s ease;
+}
+
+.side-nav .signout-btn.signin:hover {
+  filter: brightness(0.88);  /* strong but elegant darken */
+}
