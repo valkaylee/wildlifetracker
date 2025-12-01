@@ -15,15 +15,8 @@
 <body>
 
   <!-- NAV BAR -->
-  <div class="navbar">
-    <span class="nav-title" onclick="location.href='landing.html'">Wildlife Tracker</span>
-    <div class="nav-right">
-      <a href="landing.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="help.html">Help</a>
-      <a href="settings.html">Settings</a>
-    </div>
-  </div>
+  <div id="navbar"></div>
+  <!-- NAV BAR -->
 
   <div class="page-container">
 
@@ -77,5 +70,26 @@
 
   <!-- JS 必须放在 body 里 -->
   <script src="js/settings.js"></script>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
+
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+          }
+        });
+      });
+  </script>
+
+
 </body>
 </html>
