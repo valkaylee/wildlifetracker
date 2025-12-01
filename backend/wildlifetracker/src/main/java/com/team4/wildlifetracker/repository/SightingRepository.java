@@ -6,5 +6,11 @@ import java.util.List;
 
 public interface SightingRepository extends JpaRepository<Sighting, Long> {
     List<Sighting> findBySpecies(String species);
+
     List<Sighting> findByUserId(Long userId);
+
+    // Search methods
+    List<Sighting> findBySpeciesContainingIgnoreCase(String species);
+
+    List<Sighting> findByLocationContainingIgnoreCase(String location);
 }

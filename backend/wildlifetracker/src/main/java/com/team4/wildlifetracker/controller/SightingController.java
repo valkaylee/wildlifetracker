@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/sightings")
+@CrossOrigin(origins = "*")
 public class SightingController {
 
     private final SightingService sightingService;
