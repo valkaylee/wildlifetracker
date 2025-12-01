@@ -97,11 +97,15 @@ input:focus {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.signout-btn {
+/* ============================================
+   SIDEBAR SIGN IN / SIGN OUT BUTTON
+   (Only applies inside sidebar)
+============================================ */
+.side-nav .signout-btn {
   background: #f1c232;
-  color: black !important;
+  color: black;
   font-weight: bold;
-  padding: 14px 20px;
+  padding: 14px 12px;
   border-radius: 30px;
   display: flex;
   align-items: center;
@@ -109,9 +113,17 @@ input:focus {
   cursor: pointer;
 }
 
-/* Overwrite for SIGN IN (white button) */
-.signout-btn.signin {
-  background: white !important;
-  color: black !important;
+/* SIGN IN (white button) */
+.side-nav .signout-btn.signin {
+  background: white;
+  color: black;
   border: 2px solid #e0e0e0;
+}
+
+.side-nav .signout-btn.signin {
+  transition: filter 0.2s ease, background 0.2s ease;
+}
+
+.side-nav .signout-btn.signin:hover {
+  filter: brightness(0.88);  /* strong but elegant darken */
 }
