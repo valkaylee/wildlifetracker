@@ -27,19 +27,40 @@
     fetch("navbar.html")
       .then(res => res.text())
       .then(html => {
+        // Insert navbar html
         document.getElementById("navbar").innerHTML = html;
 
-        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
-        const page = location.pathname.split("/").pop() || "landing.html";
-        const links = document.querySelectorAll(".side-nav a");
+        /* ========== AUTO-HIGHLIGHT ========== */
+        const currentPage = location.pathname.split("/").pop();
+        const navLinks = document.querySelectorAll(".side-nav a");
 
-        links.forEach(link => {
-          if (link.getAttribute("href") === page) {
+        navLinks.forEach(link => {
+          if (link.getAttribute("href") === currentPage) {
             link.classList.add("active");
           }
         });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
       });
-</script>
+    </script>
 
 </body>
 </html>

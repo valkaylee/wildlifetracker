@@ -3,7 +3,7 @@
 ============================================ */
 .side-nav {
   width: 240px;
-  background: #b12222; /* deep red */
+  background: #a53026;            /* Deep Wildlife Tracker red */
   height: 100vh;
   padding-top: 20px;
   display: flex;
@@ -20,11 +20,11 @@
    SIDEBAR TITLE
 ============================================ */
 .nav-header {
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 26px;
+  font-weight: 700;
   text-align: center;
   width: 100%;
-  padding-bottom: 30px;
+  padding: 0 20px 35px 20px;
 }
 
 /* ============================================
@@ -33,53 +33,77 @@
 .side-nav a {
   color: white;
   text-decoration: none;
-  padding: 12px 20px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  font-size: 15px;
-  border-radius: 8px;
-  margin: 4px 10px;
-  transition: background 0.15s ease;
+  font-size: 17px;
+  border-radius: 12px;
+  margin: 6px 12px;
+  transition: background 0.2s ease;
 }
 
 .icon {
-  font-size: 22px;
+  font-size: 24px;
   margin-right: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Hover Lightening */
+/* Hover */
 .side-nav a:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.12);
 }
 
-/* ACTIVE PAGE — DARK RED OVERLAY */
+/* Active page highlight */
 .side-nav a.active {
-  background: rgba(0,0,0,0.25);
-  font-weight: bold;
+  background: rgba(0,0,0,0.27);
+  font-weight: 700;
 }
 
 /* ============================================
-   SIGN OUT BUTTON (LARGE + ROUNDED)
+   AUTH BUTTONS (BOTTOM)
 ============================================ */
-.signout {
+.auth-buttons {
   margin-top: auto;
-  padding: 40px 20px; /* extra spacing above bottom */
-}
-
-.signout-btn {
-  background: #f1c232; /* warm yellow */
-  color: black !important;
-  font-weight: bold;
-  padding: 14px 20px;
-  border-radius: 30px; /* rounded like mockup */
+  padding: 35px 20px 28px 20px;   /* consistent bottom spacing */
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 14px;
 }
 
-.signout-btn .icon {
-  margin-right: 8px;
+/* Shared style */
+.auth-btn {
+  flex: 1;
+  padding: 14px 0;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: background 0.18s ease, transform 0.18s ease;
+}
+
+/* LOGIN BUTTON (Yellow) */
+.login-btn {
+  background: #f7cd42;   /* soft USC yellow */
+  color: black;
+}
+.login-btn:hover {
+  background: #e6c039;    /* subtle hover */
+  transform: translateY(-1px);
+}
+
+/* LOGOUT BUTTON (Red-but-soft) */
+.logout-btn {
+  background: #c75a53;    /* muted red */
+  color: white;
+}
+.logout-btn:hover {
+  background: #ba4f49;
+  transform: translateY(-1px);
 }

@@ -2,13 +2,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
       rel="stylesheet" />
 
-<!-- SIDEBAR -->
 <div class="side-nav">
 
   <div class="nav-header">Wildlife Tracker</div>
 
   <a href="landing.html">
-    <span class="material-symbols-rounded icon">visibility</span>
+    <span class="material-symbols-rounded icon">home</span>
     Home
   </a>
 
@@ -32,24 +31,8 @@
     Settings
   </a>
 
-  <div class="signout">
-    <a href="logout.html" class="signout-btn">
-      <span class="material-symbols-rounded icon">logout</span>
-      Sign Out
-    </a>
+  <div class="auth-buttons">
+    <a id="loginBtn" class="auth-btn login-btn">Login</a>
+    <a id="logoutBtn" class="auth-btn logout-btn">Logout</a>
   </div>
 </div>
-
-<!-- AUTO-HIGHLIGHT ACTIVE PAGE -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const page = location.pathname.split("/").pop();
-    const links = document.querySelectorAll(".side-nav a");
-
-    links.forEach(link => {
-      if (link.getAttribute("href") === page) {
-        link.classList.add("active");
-      }
-    });
-  });
-</script>
