@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report Sighting – Wildlife Tracker</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/report.css" />
+</head>
+
+<body>
+
+  <!-- NAV BAR -->
+  <div id="navbar"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="report-container">
+    
+    <!-- FORM CARD -->
+    <div class="report-form-card">
+      
+      <!-- FORM HEADER -->
+      <div class="form-header">
+        <h1>Report a Wildlife Sighting</h1>
+        <p class="form-subtitle">Help track campus wildlife by sharing your observations</p>
+      </div>
+
+      <!-- FORM BODY -->
+      <div class="form-body">
+        <form id="sightingForm">
+          
+          <div class="form-group">
+            <label for="species">Species / Animal Type</label>
+            <input 
+              type="text" 
+              id="species" 
+              name="species" 
+              placeholder="e.g., Red-tailed Hawk, Coyote, Squirrel"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="location">Campus Location</label>
+            <input 
+              type="text" 
+              id="location" 
+              name="location" 
+              placeholder="e.g., Trousdale Parkway, Alumni Park, Near Doheny Library"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea 
+              id="description" 
+              name="description" 
+              rows="5"
+              placeholder="Describe the animal's behavior, appearance, and any other relevant details..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="photo">Photo (Optional)</label>
+            <div class="file-input-wrapper">
+              <input 
+                type="file" 
+                id="photo" 
+                name="photo" 
+                accept="image/*"
+                class="file-input"
+              />
+              <label for="photo" class="file-input-label">
+                <span class="file-input-text">Choose File</span>
+                <span class="file-input-name" id="fileName">No file chosen</span>
+                <span class="material-symbols-rounded file-icon">camera_alt</span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            <span class="material-symbols-rounded">upload</span>
+            <span>Submit Sighting</span>
+          </button>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
+
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+          }
+        });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
+      });
+  </script>
+
+  <!-- REPORT JS -->
+  <script src="js/report.js"></script>
+
+</body>
+</html>
+

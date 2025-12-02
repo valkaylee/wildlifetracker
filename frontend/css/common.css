@@ -1,19 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+
+* {
+  font-family: 'Inter', sans-serif;
+}
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  background: #eef2ff; 
+  background: #f5f5f5; 
   line-height: 1.9;
   color: #1f2937;
 }
 .page-container {
   max-width: 700px; 
-  margin: 40px auto;  
+  margin: 40px 40px 40px calc(240px + 40px); /* top right bottom left - Account for sidebar */
   padding: 0 20px;
-
 }
 h1, h2, h3, h4 {
   font-weight: 600;
@@ -25,17 +28,22 @@ h1, h2, h3, h4 {
 
 button {
   padding: 12px 25px;
-  background: #6366f1;  
+  background: #ff6b35;  
   color: white;
   border: none;
   border-radius: 8px;      
   cursor: pointer;
   font-size: 16px;
-  box-shadow: 0 3px 8px rgba(79,70,229,0.25);
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 3px 8px rgba(255, 107, 53, 0.25);
+  transition: background 0.2s, transform 0.2s;
 }
 
 button:hover {
-  background: #4f46e5;
+  background: #d84315;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
 }
 
 
@@ -43,6 +51,7 @@ button:hover {
   background: white;
   padding: 28px;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(79,70,229,0.18);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   margin-top: 25px;
+  border-top: 3px solid #ff6b35;
 }

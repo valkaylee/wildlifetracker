@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Profile – Wildlife Tracker</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/profile.css" />
+</head>
+
+<body>
+
+  <!-- NAV BAR -->
+  <div id="navbar"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="profile-container">
+    
+    <!-- USER OVERVIEW -->
+    <div class="user-overview">
+      <div class="profile-picture-container">
+        <img id="profilePicture" src="https://via.placeholder.com/120/FF6B35/FFFFFF?text=User" alt="Profile Picture" class="profile-picture" />
+      </div>
+      <div class="user-info">
+        <h2 id="displayName">Wildlife Observer</h2>
+        <p id="userBio" class="user-bio">No bio yet. Add a description in settings!</p>
+      </div>
+    </div>
+
+    <!-- STATISTICS CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card stat-red">
+        <div class="stat-header">
+          <h3>Total Sightings</h3>
+          <span class="material-symbols-rounded stat-icon">bar_chart</span>
+        </div>
+        <div class="stat-value" id="totalSightings">0</div>
+        <div class="stat-label">wildlife observations</div>
+      </div>
+
+      <div class="stat-card stat-green">
+        <div class="stat-header">
+          <h3>Unique Species</h3>
+          <span class="material-symbols-rounded stat-icon">person</span>
+        </div>
+        <div class="stat-value" id="uniqueSpecies">0</div>
+        <div class="stat-label">different animals spotted</div>
+      </div>
+
+      <div class="stat-card stat-orange">
+        <div class="stat-header">
+          <h3>Favorite Species</h3>
+          <span class="material-symbols-rounded stat-icon">person</span>
+        </div>
+        <div class="stat-value" id="favoriteSpecies">N/A</div>
+        <div class="stat-label" id="favoriteSpeciesCount">0 sightings</div>
+      </div>
+    </div>
+
+    <!-- SPECIES OBSERVATIONS -->
+    <div class="section-card">
+      <div class="section-header header-green">
+        <div>
+          <h2>Your Species Observations</h2>
+          <p class="section-subtitle">Breakdown of all species you've spotted</p>
+        </div>
+      </div>
+      <div class="section-content content-green">
+        <div id="speciesList" class="species-list">
+          <p class="empty-message">No sightings yet. Start exploring campus!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT SIGHTINGS -->
+    <div class="section-card">
+      <div class="section-header header-red">
+        <div>
+          <h2>Your Recent Sightings</h2>
+          <p class="section-subtitle">Latest wildlife observations you've reported</p>
+        </div>
+      </div>
+      <div class="section-content content-red">
+        <div id="recentSightings" class="sightings-grid">
+          <p class="empty-message">No sightings yet. Report your first wildlife encounter!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHOTO COMPILATION -->
+    <div class="section-card">
+      <div class="section-header header-orange">
+        <div>
+          <h2>Your Photo Gallery</h2>
+          <p class="section-subtitle">Compilation of your wildlife photos</p>
+        </div>
+      </div>
+      <div class="section-content content-orange">
+        <div id="photoGallery" class="photo-gallery">
+          <p class="empty-message">No photos yet. Add photos to your sightings!</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
+
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+          }
+        });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
+      });
+  </script>
+
+  <!-- PROFILE JS -->
+  <script src="js/profile.js"></script>
+
+</body>
+</html>
+

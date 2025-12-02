@@ -1,0 +1,449 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #1f2937;
+}
+
+.admin-container {
+  margin-left: 240px; /* Account for sidebar */
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* ============================================
+   HEADER
+============================================ */
+.admin-header {
+  background: linear-gradient(135deg, #d84315 0%, #4caf50 100%);
+  padding: 24px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-icon {
+  font-size: 40px;
+  color: white;
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+}
+
+.header-subtitle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.admin-badge .material-symbols-rounded {
+  font-size: 20px;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+.logout-btn .material-symbols-rounded {
+  font-size: 20px;
+}
+
+/* ============================================
+   SUMMARY CARDS
+============================================ */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  padding: 32px 40px;
+  background: #f5f5f5;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.card-border {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.card-red .card-border {
+  background: #e53e3e;
+}
+
+.card-green .card-border {
+  background: #38a169;
+}
+
+.card-yellow .card-border {
+  background: #f7cd42;
+}
+
+.card-orange .card-border {
+  background: #ff6b35;
+}
+
+.card-blue .card-border {
+  background: #3182ce;
+}
+
+.card-content h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.card-subvalue {
+  font-size: 14px;
+  color: #718096;
+  margin-top: 4px;
+}
+
+/* ============================================
+   SECTION CARDS
+============================================ */
+.section-card {
+  margin: 0 40px 32px 40px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-header {
+  padding: 20px 28px;
+  color: white;
+}
+
+.header-green {
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+}
+
+.header-orange {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7cd42 100%);
+}
+
+.section-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+}
+
+.section-subtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.section-content {
+  padding: 28px;
+  border: 3px solid;
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+}
+
+.content-green {
+  border-color: #c8e6c9;
+}
+
+.content-orange {
+  border-color: #ffe0b2;
+}
+
+/* ============================================
+   SPECIES LIST
+============================================ */
+.species-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: species-counter;
+}
+
+.species-list li {
+  counter-increment: species-counter;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: #f7f8fa;
+  border-radius: 8px;
+  border-left: 4px solid #2e7d32;
+  font-weight: 500;
+  color: #1f2937;
+  position: relative;
+  padding-left: 50px;
+}
+
+.species-list li::before {
+  content: counter(species-counter);
+  position: absolute;
+  left: 16px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.empty-message {
+  text-align: center;
+  color: #718096;
+  font-size: 16px;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+/* ============================================
+   SEARCH BAR
+============================================ */
+.search-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #718096;
+  font-size: 24px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 14px 16px 14px 50px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f7f8fa;
+  transition: all 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: #ff6b35;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+/* ============================================
+   TABLE
+============================================ */
+.table-container {
+  overflow-x: auto;
+}
+
+.sightings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.sightings-table thead {
+  background: #f7f8fa;
+}
+
+.sightings-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #1e293b;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.sightings-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+}
+
+.sightings-table tbody tr:hover {
+  background: #f7f8fa;
+}
+
+.sightings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: #e2e8f0;
+}
+
+.action-btn.view {
+  color: #3182ce;
+}
+
+.action-btn.delete {
+  color: #e53e3e;
+}
+
+.action-btn .material-symbols-rounded {
+  font-size: 20px;
+}
+
+/* ============================================
+   MESSAGES
+============================================ */
+.admin-message {
+  margin: 20px 40px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 15px;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-message-success {
+  background: #c8e6c9;
+  color: #2e7d32;
+  border: 2px solid #4caf50;
+}
+
+.admin-message-error {
+  background: #ffcdd2;
+  color: #c62828;
+  border: 2px solid #e53e3e;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 1024px) {
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    margin-left: 0;
+  }
+  
+  .admin-header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .summary-cards {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+  
+  .section-card {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  .sightings-table {
+    font-size: 12px;
+  }
+  
+  .sightings-table th,
+  .sightings-table td {
+    padding: 10px 8px;
+  }
+}
+

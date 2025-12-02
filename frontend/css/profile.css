@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #1f2937;
+}
+
+.profile-container {
+  margin-left: 240px; /* Account for sidebar */
+  padding: 40px;
+  min-height: 100vh;
+}
+
+/* ============================================
+   USER OVERVIEW
+============================================ */
+.user-overview {
+  background: #c8e6c9;
+  padding: 32px 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0 0 32px 0;
+  border-radius: 16px;
+}
+
+.profile-picture-container {
+  flex-shrink: 0;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.user-info h2 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.user-bio {
+  margin: 0;
+  font-size: 16px;
+  color: #4a5568;
+  line-height: 1.6;
+  max-width: 600px;
+}
+
+/* ============================================
+   STATISTICS CARDS
+============================================ */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-top: 4px solid;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.stat-red {
+  border-color: #e53e3e;
+}
+
+.stat-green {
+  border-color: #38a169;
+}
+
+.stat-orange {
+  border-color: #ff6b35;
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stat-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.stat-icon {
+  font-size: 24px;
+  opacity: 0.6;
+}
+
+.stat-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #718096;
+}
+
+/* ============================================
+   SECTION CARDS
+============================================ */
+.section-card {
+  margin-bottom: 32px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-header {
+  padding: 20px 28px;
+  color: white;
+}
+
+.header-green {
+  background: linear-gradient(135deg, #2e7d32 0%, #ff6b35 100%);
+}
+
+.header-red {
+  background: linear-gradient(135deg, #c62828 0%, #ff6b35 100%);
+}
+
+.header-orange {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7cd42 100%);
+}
+
+.section-header h2 {
+  margin: 0 0 4px 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+}
+
+.section-subtitle {
+  margin: 0;
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.section-content {
+  padding: 28px;
+  border: 3px solid;
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+}
+
+.content-green {
+  border-color: #c8e6c9;
+}
+
+.content-red {
+  border-color: #ffcdd2;
+}
+
+.content-orange {
+  border-color: #ffe0b2;
+}
+
+.empty-message {
+  text-align: center;
+  color: #718096;
+  font-size: 16px;
+  padding: 40px 20px;
+  margin: 0;
+}
+
+/* ============================================
+   SPECIES LIST
+============================================ */
+.species-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.species-item {
+  background: #f7f8fa;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 2px solid #c8e6c9;
+  font-weight: 500;
+  color: #2e7d32;
+}
+
+/* ============================================
+   SIGHTINGS GRID
+============================================ */
+.sightings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.sighting-card {
+  background: #f7f8fa;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #ffcdd2;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sighting-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.sighting-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: #e0e0e0;
+}
+
+.sighting-info {
+  padding: 16px;
+}
+
+.sighting-species {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.sighting-location {
+  font-size: 14px;
+  color: #718096;
+  margin: 0 0 8px 0;
+}
+
+.sighting-date {
+  font-size: 12px;
+  color: #a0aec0;
+  margin: 0;
+}
+
+/* ============================================
+   PHOTO GALLERY
+============================================ */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid #ffe0b2;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.photo-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  padding: 12px;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sightings-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    margin-left: 0;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .nav-bar {
+    flex-wrap: wrap;
+    padding: 12px 20px;
+  }
+  
+  .user-overview {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
+  }
+  
+  .stats-grid,
+  .section-card {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
