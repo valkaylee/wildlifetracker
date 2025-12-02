@@ -1,9 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 /* Make sizing predictable everywhere inside sidebar */
 .side-nav, .side-nav * {
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
 }
 
 /* ============================================
@@ -11,7 +8,7 @@
 ============================================ */
 .side-nav {
   width: 240px;
-  background: linear-gradient(180deg, #2e7d32 0%, #4caf50 100%); /* green gradient */
+  background: #a53026; /* deep red */
   height: 100vh;
   padding-top: 20px;
   display: flex;
@@ -67,13 +64,12 @@
 
 /* Hover + Active only apply to nav items */
 .side-nav a:not(.auth-btn):hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.12);
 }
 
 .side-nav a.active:not(.auth-btn) {
-  background: #ff6b35; /* orange for active */
+  background: rgba(0,0,0,0.27);
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
 /* ============================================
@@ -103,25 +99,23 @@
   transition: background 0.22s ease, filter 0.22s ease;
 }
 
-/* Login button (orange) */
+/* Login button (yellow) */
 .login-btn {
-  background: #ff6b35;
-  color: white;
+  background: #f7cd42;
+  color: #111;
 }
 
 /* Softer hover: small change only, no movement jump */
 .login-btn:hover {
-  background: #d84315;
-  filter: brightness(1.05);
+  filter: brightness(0.97);   /* subtle */
 }
 
-/* Logout button (darker orange) */
+/* Logout button (muted red) */
 .logout-btn {
-  background: #d84315;
+  background: #c75a53;
   color: white;
 }
 
 .logout-btn:hover {
-  background: #bf360c;
-  filter: brightness(1.05);
+  filter: brightness(0.96);
 }
