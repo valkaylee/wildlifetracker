@@ -1,52 +1,38 @@
-package com.team4.wildlifetracker.model;
+package com.team4.wildlifetracker.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
+public class LeaderboardEntry {
+    private Long userId;
     private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    // Additional user fields can be added here later (e.g., email, profile info)
-    @Column(length = 100)
     private String displayName;
-
-    @Column(length = 500)
-    private String bio;
-
-    @Column(length = 500)
     private String profilePictureUrl;
-    
-    @Column(nullable = false)
-    private Integer totalAnimalsLogged = 0;
-
-    @Column(nullable = false)
-    private Integer uniqueSpeciesCount = 0;
-
-    @Column
+    private Integer totalAnimalsLogged;
+    private Integer uniqueSpeciesCount;
     private LocalDateTime lastActivityDate;
+    private Integer rank;
 
-    public User() {}
+    public LeaderboardEntry() {}
 
-    public User(String username, String password) {
+    public LeaderboardEntry(Long userId, String username, String displayName, 
+                           String profilePictureUrl, Integer totalAnimalsLogged, 
+                           Integer uniqueSpeciesCount, LocalDateTime lastActivityDate) {
+        this.userId = userId;
         this.username = username;
-        this.password = password;
-        this.totalAnimalsLogged = 0;
-        this.uniqueSpeciesCount = 0;
+        this.displayName = displayName;
+        this.profilePictureUrl = profilePictureUrl;
+        this.totalAnimalsLogged = totalAnimalsLogged;
+        this.uniqueSpeciesCount = uniqueSpeciesCount;
+        this.lastActivityDate = lastActivityDate;
     }
 
-    public Long getId() {
-        return id;
+    // Getters and setters
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -57,28 +43,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
     public String getDisplayName() {
         return displayName;
     }
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
     }
 
     public String getProfilePictureUrl() {
@@ -88,7 +58,7 @@ public class User {
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
     }
-    
+
     public Integer getTotalAnimalsLogged() {
         return totalAnimalsLogged;
     }
@@ -111,5 +81,13 @@ public class User {
 
     public void setLastActivityDate(LocalDateTime lastActivityDate) {
         this.lastActivityDate = lastActivityDate;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 }

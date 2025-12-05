@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
 /* Container offset for sidebar */
 .auth-container {
   margin-left: 240px;
@@ -5,6 +11,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #f5f5f5;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Main box */
@@ -13,9 +21,10 @@
   background: #fff;
   padding: 40px;
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-  font-family: Inter, sans-serif;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  font-family: 'Inter', sans-serif;
   animation: fadeIn 0.3s ease;
+  border-top: 3px solid #ff6b35;
 }
 
 /* Headers */
@@ -44,10 +53,12 @@ input {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14px;
+  font-family: 'Inter', sans-serif;
 }
 
 input:focus {
-  border-color: #b12222;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
 }
 
 /* Buttons */
@@ -55,17 +66,21 @@ input:focus {
   width: 100%;
   margin-top: 20px;
   padding: 12px;
-  background: #b12222;
+  background: #ff6b35;
   color: #fff;
-  font-weight: bold;
+  font-weight: 600;
   font-size: 15px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 3px 8px rgba(255, 107, 53, 0.25);
 }
 
 .primary-btn:hover {
-  background: #9a1e1e;
+  background: #d84315;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.35);
 }
 
 /* Switch links */
@@ -77,7 +92,7 @@ input:focus {
 }
 
 .switch-text a {
-  color: #b12222;
+  color: #ff6b35;
   font-weight: 600;
   text-decoration: none;
 }
