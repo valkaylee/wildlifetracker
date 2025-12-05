@@ -9,6 +9,8 @@ public class SightingRequest {
     private String location;
     private String description;
     private String imageUrl;
+    private Integer pixelX;
+    private Integer pixelY;
     private Long userId;
 
     public SightingRequest() {}
@@ -61,5 +63,21 @@ public class SightingRequest {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Integer getPixelX() {
+        return pixelX;
+    }
+
+    public void setPixelX(Integer pixelX) {
+        this.pixelX = pixelX;
+    }
+
+    public Integer getPixelY() {
+        return pixelY;
+    }
+
+    public void setPixelY(Integer pixelY) {
+        this.pixelY = pixelY;
     }
 }

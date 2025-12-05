@@ -21,6 +21,13 @@ public class Sighting {
 
     private LocalDateTime timestamp = LocalDateTime.now();
 
+    // Pixel coordinates on the campus map image
+    @Column(name = "pixel_x")
+    private Integer pixelX;
+    
+    @Column(name = "pixel_y")
+    private Integer pixelY;
+
     // Link to the user who created this sighting
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -33,6 +40,16 @@ public class Sighting {
         this.location = location;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.user = user;
+    }
+
+    public Sighting(String species, String location, String description, String imageUrl, Integer pixelX, Integer pixelY, User user) {
+        this.species = species;
+        this.location = location;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.pixelX = pixelX;
+        this.pixelY = pixelY;
         this.user = user;
     }
 
@@ -55,4 +72,10 @@ public class Sighting {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+
+    public Integer getPixelX() { return pixelX; }
+    public void setPixelX(Integer pixelX) { this.pixelX = pixelX; }
+
+    public Integer getPixelY() { return pixelY; }
+    public void setPixelY(Integer pixelY) { this.pixelY = pixelY; }
 }
