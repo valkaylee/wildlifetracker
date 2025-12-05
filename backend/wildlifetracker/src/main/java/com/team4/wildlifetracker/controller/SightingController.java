@@ -1,12 +1,26 @@
 package com.team4.wildlifetracker.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.team4.wildlifetracker.dto.SightingRequest;
 import com.team4.wildlifetracker.dto.SightingResponse;
 import com.team4.wildlifetracker.service.SightingService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/sightings")
@@ -46,6 +60,31 @@ public class SightingController {
     public ResponseEntity<List<SightingResponse>> getAllSightings() {
         List<SightingResponse> sightings = sightingService.findAllAsDto();
         return ResponseEntity.ok(sightings);
+    }
+    
+    // READ (by user)
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<SightingResponse>> getSightingsByUser(@PathVariable Long userId) {
+        List<SightingResponse> sightings = sightingService.findByUserIdAsDto(userId);
+        return ResponseEntity.ok(sightings);
+    }
+
+    // UPLOAD sighting image
+    @PostMapping("/upload-image")
+    public ResponseEntity<?> uploadSightingImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String imageUrl = sightingService.uploadSightingImage(file);
+            
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", imageUrl);
+            response.put("message", "Image uploaded successfully");
+            
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Failed to upload file: " + e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     // UPDATE

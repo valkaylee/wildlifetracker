@@ -1,13 +1,5 @@
 package com.team4.wildlifetracker.service;
 
-import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
-import com.team4.wildlifetracker.dto.UserResponse;
-import com.team4.wildlifetracker.model.User;
-import com.team4.wildlifetracker.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +7,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
+import com.team4.wildlifetracker.dto.UserResponse;
+import com.team4.wildlifetracker.model.User;
+import com.team4.wildlifetracker.repository.UserRepository;
 
 @Service
 public class UserService {

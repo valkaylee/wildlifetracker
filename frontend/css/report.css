@@ -216,6 +216,80 @@ body {
 }
 
 /* ============================================
+   MAP PICKER
+============================================ */
+.map-picker-wrapper {
+  position: relative;
+  width: 100%;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0;
+  background: #f9f9f9;
+  cursor: crosshair;
+}
+
+.map-picker {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+.map-picker-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.marker-dot {
+  width: 24px;
+  height: 24px;
+  background: radial-gradient(circle at 30% 30%, #4caf50, #2e7d32);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.form-hint {
+  font-size: 13px;
+  color: #666;
+  margin-top: -8px;
+  margin-bottom: 12px;
+}
+
+.location-display {
+  background: #e8f5e9;
+  border: 1px solid #c8e6c9;
+  border-radius: 6px;
+  padding: 12px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+.location-display p {
+  margin: 4px 0;
+}
+
+.coordinates-hint {
+  color: #666;
+  font-size: 12px !important;
+  font-style: italic;
+}
+
+/* ============================================
    RESPONSIVE
 ============================================ */
 @media (max-width: 768px) {

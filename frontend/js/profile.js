@@ -13,14 +13,39 @@ function getCurrentUserId() {
 async function loadProfile() {
   try {
     const userId = getCurrentUserId();
-    const response = await fetch(`${API_BASE}/profile/${userId}`);
     
-    if (!response.ok) {
-      throw new Error('Failed to load profile');
+    // Fetch user info
+    const userResponse = await fetch(`${API_BASE}/users/${userId}`);
+    if (!userResponse.ok) {
+      throw new Error('Failed to load user info');
     }
+    const userData = await userResponse.json();
     
-    const data = await response.json();
-    displayProfile(data);
+    // Fetch user's sightings
+    const sightingsResponse = await fetch(`${API_BASE}/sightings/user/${userId}`);
+    if (!sightingsResponse.ok) {
+      throw new Error('Failed to load sightings');
+    }
+    const sightings = await sightingsResponse.json();
+    
+    // Combine data for display
+    const profileData = {
+      displayName: userData.displayName || 'Wildlife Observer',
+      bio: userData.bio || 'No bio yet. Add a description in settings!',
+      profilePictureUrl: userData.profilePictureUrl,
+      recentSightings: sightings,
+      statistics: {
+        totalSightings: userData.totalAnimalsLogged || 0,
+        uniqueSpecies: userData.uniqueSpeciesCount || 0
+      }
+    };
+    
+    console.log('Sightings received:', sightings);
+    sightings.forEach((s, i) => {
+      console.log(`Sighting ${i}:`, s.species, 'ImageUrl:', s.imageUrl);
+    });
+    
+    displayProfile(profileData);
   } catch (error) {
     console.error('Error loading profile:', error);
     // Show default/empty state
@@ -34,9 +59,7 @@ async function loadProfile() {
         favoriteSpecies: null,
         favoriteSpeciesCount: 0
       },
-      speciesList: [],
-      recentSightings: [],
-      photos: []
+      recentSightings: []
     });
   }
 }
@@ -76,27 +99,35 @@ function displayProfile(data) {
     favoriteSpeciesCountEl.textContent = '0 sightings';
   }
   
-  // Species list
-  displaySpeciesList(data.speciesList || []);
+  // Species list - calculate from sightings
+  const sightings = data.recentSightings || [];
+  displaySpeciesList(sightings);
   
   // Recent sightings
-  displayRecentSightings(data.recentSightings || []);
+  displayRecentSightings(sightings);
   
-  // Photo gallery
-  displayPhotoGallery(data.photos || []);
+  // Photo gallery - filter sightings with images
+  displayPhotoGallery(sightings.filter(s => s.imageUrl));
 }
 
 // Display species list
-function displaySpeciesList(speciesList) {
+function displaySpeciesList(sightings) {
   const container = document.getElementById('speciesList');
   
-  if (speciesList.length === 0) {
+  if (sightings.length === 0) {
     container.innerHTML = '<p class="empty-message">No sightings yet. Start exploring campus!</p>';
     return;
   }
   
-  container.innerHTML = speciesList.map(species => 
-    `<div class="species-item">${species.name} (${species.count})</div>`
+  // Count species from sightings
+  const speciesMap = {};
+  sightings.forEach(s => {
+    const species = s.species || 'Unknown Species';
+    speciesMap[species] = (speciesMap[species] || 0) + 1;
+  });
+  
+  container.innerHTML = Object.entries(speciesMap).map(([species, count]) => 
+    `<div class="species-item">${species} (${count})</div>`
   ).join('');
 }
 
@@ -111,8 +142,10 @@ function displayRecentSightings(sightings) {
   
   container.innerHTML = sightings.map(sighting => {
     const date = new Date(sighting.timestamp).toLocaleDateString();
-    const imageHtml = sighting.imageUrl 
-      ? `<img src="${sighting.imageUrl}" alt="${sighting.species}" class="sighting-image" />`
+    // Ensure imageUrl is absolute URL
+    const imageUrl = sighting.imageUrl ? (sighting.imageUrl.startsWith('http') ? sighting.imageUrl : `http://localhost:8080${sighting.imageUrl}`) : null;
+    const imageHtml = imageUrl 
+      ? `<img src="${imageUrl}" alt="${sighting.species}" class="sighting-image" />`
       : `<div class="sighting-image" style="background: #e0e0e0; display: flex; align-items: center; justify-content: center; color: #999;">No Image</div>`;
     
     return `
@@ -129,19 +162,21 @@ function displayRecentSightings(sightings) {
 }
 
 // Display photo gallery
-function displayPhotoGallery(photos) {
+function displayPhotoGallery(sightings) {
   const container = document.getElementById('photoGallery');
   
-  if (photos.length === 0) {
+  if (sightings.length === 0) {
     container.innerHTML = '<p class="empty-message">No photos yet. Add photos to your sightings!</p>';
     return;
   }
   
-  container.innerHTML = photos.map(photo => {
+  container.innerHTML = sightings.map(sighting => {
+    // Ensure imageUrl is absolute URL
+    const imageUrl = sighting.imageUrl ? (sighting.imageUrl.startsWith('http') ? sighting.imageUrl : `http://localhost:8080${sighting.imageUrl}`) : null;
     return `
       <div class="photo-item">
-        <img src="${photo.imageUrl}" alt="${photo.species}" />
-        <div class="photo-overlay">${photo.species}</div>
+        <img src="${imageUrl}" alt="${sighting.species}" />
+        <div class="photo-overlay">${sighting.species}</div>
       </div>
     `;
   }).join('');

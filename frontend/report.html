@@ -45,14 +45,20 @@
           </div>
 
           <div class="form-group">
-            <label for="location">Campus Location</label>
-            <input 
-              type="text" 
-              id="location" 
-              name="location" 
-              placeholder="e.g., Trousdale Parkway, Alumni Park, Near Doheny Library"
-              required
-            />
+            <label>Select Location on Campus Map</label>
+            <p class="form-hint">Click on the map below to select where you spotted the wildlife</p>
+            <div class="map-picker-wrapper">
+              <img src="images/campus_map.png" alt="USC Campus Map" class="map-picker" id="mapPicker" />
+              <div id="mapPickerMarker" class="map-picker-marker" style="display: none;">
+                <div class="marker-dot"></div>
+              </div>
+            </div>
+            <div id="locationDisplay" class="location-display">
+              <p>No location selected yet</p>
+            </div>
+            <input type="hidden" id="pixelX" name="pixelX" />
+            <input type="hidden" id="pixelY" name="pixelY" />
+            <input type="hidden" id="location" name="location" />
           </div>
 
           <div class="form-group">

@@ -1,7 +1,8 @@
 package com.team4.wildlifetracker.dto;
 
-import com.team4.wildlifetracker.model.User;
 import java.time.LocalDateTime;
+
+import com.team4.wildlifetracker.model.User;
 
 public class UserResponse {
 
@@ -70,13 +71,5 @@ public class UserResponse {
     public void setUniqueSpeciesCount(Integer uniqueSpeciesCount) { this.uniqueSpeciesCount = uniqueSpeciesCount; }
     
     public LocalDateTime getLastActivityDate() { return lastActivityDate; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setUsername(String username) { this.username = username; }
-    public void setDisplayName(String displayName) { this.displayName = displayName; }
-    public void setBio(String bio) { this.bio = bio; }
-    public void setProfilePictureUrl(String profilePictureUrl) { this.profilePictureUrl = profilePictureUrl; }
-    public void setTotalAnimalsLogged(Integer totalAnimalsLogged) { this.totalAnimalsLogged = totalAnimalsLogged; }
-    public void setUniqueSpeciesCount(Integer uniqueSpeciesCount) { this.uniqueSpeciesCount = uniqueSpeciesCount; }
     public void setLastActivityDate(LocalDateTime lastActivityDate) { this.lastActivityDate = lastActivityDate; }
 }

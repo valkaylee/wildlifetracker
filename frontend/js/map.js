@@ -92,26 +92,39 @@ function placeMarkers(sightings, mapImg) {
   const mapHeight = mapRect.height;
   
   sightings.forEach(sighting => {
-    if (!sighting.location) return;
+    if (!sighting.location && (!sighting.pixelX || !sighting.pixelY)) return;
     
-    const locationKey = sighting.location.toLowerCase();
     let coords = null;
     
-    // Try to find exact match
-    for (const [key, value] of Object.entries(LOCATION_COORDINATES)) {
-      if (locationKey.includes(key) || key.includes(locationKey)) {
-        coords = value;
-        break;
+    // Priority 1: Use pixelX and pixelY if available (from map picker)
+    if (sighting.pixelX !== null && sighting.pixelX !== undefined && 
+        sighting.pixelY !== null && sighting.pixelY !== undefined) {
+      coords = {
+        x: sighting.pixelX,
+        y: sighting.pixelY
+      };
+    } else if (sighting.location) {
+      // Priority 2: Try to find location match
+      const locationKey = sighting.location.toLowerCase();
+      
+      for (const [key, value] of Object.entries(LOCATION_COORDINATES)) {
+        if (locationKey.includes(key) || key.includes(locationKey)) {
+          coords = value;
+          break;
+        }
+      }
+      
+      // If no match, use random position (for demo)
+      if (!coords) {
+        coords = {
+          x: 45 + Math.random() * 10,
+          y: 45 + Math.random() * 10
+        };
       }
     }
     
-    // If no match, use random position (for demo)
-    if (!coords) {
-      coords = {
-        x: 45 + Math.random() * 10,
-        y: 45 + Math.random() * 10
-      };
-    }
+    // Only create marker if we have valid coordinates
+    if (!coords) return;
     
     // Create marker
     const marker = document.createElement('div');

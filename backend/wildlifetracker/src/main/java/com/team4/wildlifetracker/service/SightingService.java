@@ -1,27 +1,42 @@
 package com.team4.wildlifetracker.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.team4.wildlifetracker.dto.SightingRequest;
 import com.team4.wildlifetracker.dto.SightingResponse;
 import com.team4.wildlifetracker.model.Sighting;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.SightingRepository;
 import com.team4.wildlifetracker.repository.UserRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SightingService {
 
     private final SightingRepository sightingRepository;
     private final UserRepository userRepository;
+    private static final String UPLOAD_DIR = "uploads/sighting-images/";
 
     public SightingService(SightingRepository sightingRepository, UserRepository userRepository) {
         this.sightingRepository = sightingRepository;
         this.userRepository = userRepository;
+        // Create upload directory if it doesn't exist
+        try {
+            Files.createDirectories(Paths.get(UPLOAD_DIR));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not create upload directory", e);
+        }
     }
 
     // CREATE from DTO
@@ -103,6 +118,13 @@ public class SightingService {
                 .map(this::toSightingResponse)
                 .collect(Collectors.toList());
     }
+    
+    // READ (by user) as DTOs
+    public List<SightingResponse> findByUserIdAsDto(Long userId) {
+        return sightingRepository.findByUserId(userId).stream()
+                .map(this::toSightingResponse)
+                .collect(Collectors.toList());
+    }
 
     // UPDATE
     @Transactional
@@ -163,6 +185,42 @@ public class SightingService {
         user.setLastActivityDate(LocalDateTime.now());
         
         userRepository.save(user);
+    }
+    
+    /**
+     * Uploads a sighting image file and returns the URL path.
+     * Validates file type and size before saving.
+     */
+    public String uploadSightingImage(MultipartFile file) throws IOException {
+        // Validate file
+        if (file.isEmpty()) {
+            throw new RuntimeException("File is empty");
+        }
+
+        // Check file type
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new RuntimeException("File must be an image");
+        }
+
+        // Check file size (limit to 5MB)
+        if (file.getSize() > 5 * 1024 * 1024) {
+            throw new RuntimeException("File size must be less than 5MB");
+        }
+
+        // Generate unique filename
+        String originalFilename = file.getOriginalFilename();
+        String extension = originalFilename != null && originalFilename.contains(".") 
+                ? originalFilename.substring(originalFilename.lastIndexOf("."))
+                : ".jpg";
+        String filename = "sighting_" + UUID.randomUUID() + extension;
+
+        // Save file
+        Path filePath = Paths.get(UPLOAD_DIR + filename);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+        // Return relative URL path
+        return "/uploads/sighting-images/" + filename;
     }
     
     /**
