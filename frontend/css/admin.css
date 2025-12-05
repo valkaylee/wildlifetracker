@@ -263,6 +263,126 @@ body {
 }
 
 /* ============================================
+   LEADERBOARD TABLE
+============================================ */
+.leaderboard-container {
+  overflow-x: auto;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.leaderboard-table thead {
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  color: white;
+  font-weight: 600;
+}
+
+.leaderboard-table th {
+  padding: 16px 12px;
+  text-align: left;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  border: none;
+}
+
+.leaderboard-table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.leaderboard-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.leaderboard-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.leaderboard-table tbody tr.rank-1 {
+  background-color: #fff9c4;
+}
+
+.leaderboard-table tbody tr.rank-2 {
+  background-color: #f1f1f1;
+}
+
+.leaderboard-table tbody tr.rank-3 {
+  background-color: #ffe0b2;
+}
+
+.rank-col {
+  text-align: center;
+  width: 80px;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  color: white;
+}
+
+.rank-badge.rank-1 {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #333;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+.rank-badge.rank-2 {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+  color: #333;
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+}
+
+.rank-badge.rank-3 {
+  background: linear-gradient(135deg, #cd7f32 0%, #e0a76f 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
+}
+
+.rank-badge:not(.rank-1):not(.rank-2):not(.rank-3) {
+  background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  color: white;
+}
+
+.user-col {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+}
+
+.sightings-col {
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #2e7d32;
+}
+
+.species-col {
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1565c0;
+}
+
+/* ============================================
    SEARCH BAR
 ============================================ */
 .search-container {

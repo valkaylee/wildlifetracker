@@ -25,8 +25,8 @@ async function loadDashboard() {
     // Calculate and display statistics
     displayStatistics(sightings, users);
     
-    // Display top 5 species
-    displayTopSpecies(sightings);
+    // Display user leaderboard
+    displayLeaderboard();
     
     // Display all sightings in table
     displaySightingsTable(sightings);
@@ -83,36 +83,47 @@ function displayStatistics(sightings, users) {
   document.getElementById('pendingReports').textContent = '0';
 }
 
-// Display top 5 species
-function displayTopSpecies(sightings) {
-  const container = document.getElementById('topSpeciesList');
+// Display user leaderboard
+async function displayLeaderboard() {
+  const tbody = document.getElementById('leaderboardBody');
   
-  if (sightings.length === 0) {
-    container.innerHTML = '<li class="empty-message">No sightings yet</li>';
-    return;
-  }
-  
-  // Count species
-  const speciesCounts = {};
-  sightings.forEach(sighting => {
-    if (sighting.species) {
-      speciesCounts[sighting.species] = (speciesCounts[sighting.species] || 0) + 1;
+  try {
+    const response = await fetch(`${API_BASE}/leaderboard/top/5`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to load leaderboard');
     }
-  });
-  
-  // Sort by count and get top 5
-  const topSpecies = Object.entries(speciesCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-  
-  if (topSpecies.length === 0) {
-    container.innerHTML = '<li class="empty-message">No species data available</li>';
-    return;
+    
+    const leaderboard = await response.json();
+    
+    if (!Array.isArray(leaderboard) || leaderboard.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-message">No leaderboard data available</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = leaderboard.map((entry, index) => `
+      <tr class="leaderboard-row ${index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : ''}">
+        <td class="rank-col">
+          <div class="rank-badge rank-${index + 1}">
+            ${index + 1}
+          </div>
+        </td>
+        <td class="user-col">
+          <span class="username">${entry.username || 'Unknown'}</span>
+        </td>
+        <td class="sightings-col">
+          <span class="sightings-count">${entry.totalAnimalsLogged || 0}</span>
+        </td>
+        <td class="species-col">
+          <span class="species-count">${entry.uniqueSpeciesCount || 0}</span>
+        </td>
+      </tr>
+    `).join('');
+    
+  } catch (error) {
+    console.error('Error loading leaderboard:', error);
+    tbody.innerHTML = '<tr><td colspan="4" class="empty-message">Error loading leaderboard</td></tr>';
   }
-  
-  container.innerHTML = topSpecies.map(([species, count]) => 
-    `<li>${species} (${count} ${count === 1 ? 'sighting' : 'sightings'})</li>`
-  ).join('');
 }
 
 // Display sightings in table

@@ -85,18 +85,32 @@
       </div>
     </div>
 
-    <!-- TOP 5 SPECIES SECTION -->
-    <div class="section-card species-section">
+    <!-- USER LEADERBOARD SECTION -->
+    <div class="section-card leaderboard-section">
       <div class="section-header header-green">
         <div>
-          <h2>Top 5 Species</h2>
-          <p class="section-subtitle">Most frequently spotted wildlife on campus</p>
+          <h2>User Leaderboard</h2>
+          <p class="section-subtitle">Top wildlife spotters on campus</p>
         </div>
       </div>
       <div class="section-content content-green">
-        <ol class="species-list" id="topSpeciesList">
-          <li class="empty-message">Loading species data...</li>
-        </ol>
+        <div class="leaderboard-container">
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th class="rank-col">Rank</th>
+                <th class="user-col">User</th>
+                <th class="sightings-col">Sightings</th>
+                <th class="species-col">Species</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <tr>
+                <td colspan="4" class="empty-message">Loading leaderboard...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
