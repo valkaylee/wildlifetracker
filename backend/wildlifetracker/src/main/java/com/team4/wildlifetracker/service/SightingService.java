@@ -27,9 +27,23 @@ public class SightingService {
     // CREATE from DTO
     @Transactional
     public SightingResponse createSighting(SightingRequest request) {
-        // Get user
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Get user - create default user if not found
+        Long userId = request.getUserId();
+        if (userId == null) {
+            userId = 1L; // Default to user ID 1
+        }
+        
+        User user = userRepository.findById(userId)
+                .orElseGet(() -> {
+                    // Create a default anonymous user if the requested user doesn't exist
+                    User defaultUser = userRepository.findByUsername("anonymous")
+                            .orElseGet(() -> {
+                                User newUser = new User("anonymous", "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy");
+                                newUser.setDisplayName("Anonymous User");
+                                return userRepository.save(newUser);
+                            });
+                    return defaultUser;
+                });
         
         // Create entity
         Sighting sighting = new Sighting(
@@ -37,6 +51,8 @@ public class SightingService {
             request.getLocation(),
             request.getDescription(),
             request.getImageUrl(),
+            request.getPixelX(),
+            request.getPixelY(),
             user
         );
         
@@ -160,6 +176,8 @@ public class SightingService {
             sighting.getDescription(),
             sighting.getImageUrl(),
             sighting.getTimestamp(),
+            sighting.getPixelX(),
+            sighting.getPixelY(),
             sighting.getUser() != null ? sighting.getUser().getId() : null,
             sighting.getUser() != null ? sighting.getUser().getUsername() : null
         );

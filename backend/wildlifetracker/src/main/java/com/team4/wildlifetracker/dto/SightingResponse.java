@@ -13,19 +13,24 @@ public class SightingResponse {
     private String description;
     private String imageUrl;
     private LocalDateTime timestamp;
+    private Integer pixelX;
+    private Integer pixelY;
     private Long userId;
     private String username;
 
     public SightingResponse() {}
 
     public SightingResponse(Long id, String species, String location, String description,
-                           String imageUrl, LocalDateTime timestamp, Long userId, String username) {
+                           String imageUrl, LocalDateTime timestamp, Integer pixelX, Integer pixelY,
+                           Long userId, String username) {
         this.id = id;
         this.species = species;
         this.location = location;
         this.description = description;
         this.imageUrl = imageUrl;
         this.timestamp = timestamp;
+        this.pixelX = pixelX;
+        this.pixelY = pixelY;
         this.userId = userId;
         this.username = username;
     }
@@ -93,5 +98,21 @@ public class SightingResponse {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getPixelX() {
+        return pixelX;
+    }
+
+    public void setPixelX(Integer pixelX) {
+        this.pixelX = pixelX;
+    }
+
+    public Integer getPixelY() {
+        return pixelY;
+    }
+
+    public void setPixelY(Integer pixelY) {
+        this.pixelY = pixelY;
     }
 }
