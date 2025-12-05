@@ -1,6 +1,6 @@
 package com.team4.wildlifetracker.controller;
 
-import com.team4.wildlifetracker.model.User;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +19,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            User saved = userService.registerUser(user.getUsername(), user.getPassword());
+            UserResponse saved = userService.registerUser(request.getUsername(), request.getPassword());
             return ResponseEntity.ok(saved);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Username already exists");
@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        Optional<User> found = userService.login(user.getUsername(), user.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        Optional<UserResponse> found = userService.login(request.getUsername(), request.getPassword());
 
         if (found.isPresent()) {
             return ResponseEntity.ok(found.get());
@@ -41,9 +41,26 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
-        Optional<User> user = userService.findById(id);
+        Optional<UserResponse> user = userService.findByIdAsDto(id);
 
         return user.map(ResponseEntity::ok)
                    .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    // Request DTOs
+    static class RegisterRequest {
+        private String username;
+        private String password;
+
+        public String getUsername() { return username; }
+        public String getPassword() { return password; }
+    }
+
+    static class LoginRequest {
+        private String username;
+        private String password;
+
+        public String getUsername() { return username; }
+        public String getPassword() { return password; }
     }
 }

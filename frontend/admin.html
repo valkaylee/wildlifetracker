@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard – Wildlife Tracker</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+
+<body>
+
+  <!-- NAV BAR -->
+  <div id="navbar"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="admin-container">
+    
+    <!-- HEADER -->
+    <div class="admin-header">
+      <div class="header-left">
+        <span class="material-symbols-rounded logo-icon">menu_book</span>
+        <div class="header-text">
+          <h1>USC Wildlife Tracker</h1>
+          <p class="header-subtitle">Admin Dashboard</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="admin-badge">
+          <span class="material-symbols-rounded">person</span>
+          <span>Admin</span>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">
+          <span>Logout</span>
+          <span class="material-symbols-rounded">logout</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-cards">
+      <div class="summary-card card-red">
+        <div class="card-border"></div>
+        <div class="card-content">
+          <h3>Total Sightings</h3>
+          <div class="card-value" id="totalSightings">0</div>
+        </div>
+      </div>
+
+      <div class="summary-card card-green">
+        <div class="card-border"></div>
+        <div class="card-content">
+          <h3>Unique Species</h3>
+          <div class="card-value" id="uniqueSpecies">0</div>
+        </div>
+      </div>
+
+      <div class="summary-card card-yellow">
+        <div class="card-border"></div>
+        <div class="card-content">
+          <h3>Most Spotted</h3>
+          <div class="card-value" id="mostSpotted">N/A</div>
+          <div class="card-subvalue" id="mostSpottedCount">0 sightings</div>
+        </div>
+      </div>
+
+      <div class="summary-card card-orange">
+        <div class="card-border"></div>
+        <div class="card-content">
+          <h3>Total Users</h3>
+          <div class="card-value" id="totalUsers">0</div>
+        </div>
+      </div>
+
+      <div class="summary-card card-blue">
+        <div class="card-border"></div>
+        <div class="card-content">
+          <h3>Pending Reports</h3>
+          <div class="card-value" id="pendingReports">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOP 5 SPECIES SECTION -->
+    <div class="section-card species-section">
+      <div class="section-header header-green">
+        <div>
+          <h2>Top 5 Species</h2>
+          <p class="section-subtitle">Most frequently spotted wildlife on campus</p>
+        </div>
+      </div>
+      <div class="section-content content-green">
+        <ol class="species-list" id="topSpeciesList">
+          <li class="empty-message">Loading species data...</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- ALL SIGHTINGS SECTION -->
+    <div class="section-card sightings-section">
+      <div class="section-header header-orange">
+        <div>
+          <h2>All Sightings</h2>
+          <p class="section-subtitle">Manage and review all wildlife reports</p>
+        </div>
+      </div>
+      <div class="section-content content-orange">
+        <!-- SEARCH BAR -->
+        <div class="search-container">
+          <span class="material-symbols-rounded search-icon">search</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search by species, location, or user..."
+          />
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-container">
+          <table class="sightings-table">
+            <thead>
+              <tr>
+                <th>Species</th>
+                <th>Location</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>User</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sightingsTableBody">
+              <tr>
+                <td colspan="6" class="empty-message">Loading sightings...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
+
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+          }
+        });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
+      });
+  </script>
+
+  <!-- ADMIN JS -->
+  <script src="js/admin.js"></script>
+
+  <script>
+    function handleLogout() {
+      localStorage.setItem("loggedIn", "false");
+      location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
+
