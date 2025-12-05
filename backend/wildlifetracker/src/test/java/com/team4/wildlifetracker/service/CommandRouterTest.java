@@ -3,6 +3,7 @@ package com.team4.wildlifetracker.service;
 import com.team4.wildlifetracker.dto.Command;
 import com.team4.wildlifetracker.dto.CommandResponse;
 import com.team4.wildlifetracker.dto.LeaderboardEntry;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.model.Notification;
 import com.team4.wildlifetracker.model.Sighting;
 import com.team4.wildlifetracker.model.User;
@@ -575,13 +576,14 @@ class CommandRouterTest {
         params.put("profilePictureUrl", "/uploads/pic.jpg");
         command.setParameters(params);
 
-        User updatedUser = new User("testuser", "password");
-        setId(updatedUser, 1L);
-        updatedUser.setDisplayName("New Name");
-        updatedUser.setBio("New bio");
-        updatedUser.setProfilePictureUrl("/uploads/pic.jpg");
+        UserResponse updatedUserResponse = new UserResponse();
+        updatedUserResponse.setId(1L);
+        updatedUserResponse.setUsername("testuser");
+        updatedUserResponse.setDisplayName("New Name");
+        updatedUserResponse.setBio("New bio");
+        updatedUserResponse.setProfilePictureUrl("/uploads/pic.jpg");
 
-        when(userService.updateProfile(eq(1L), any())).thenReturn(updatedUser);
+        when(userService.updateProfile(eq(1L), any())).thenReturn(updatedUserResponse);
         when(leaderboardService.getUserRank(1L)).thenReturn(null);
 
         // Act

@@ -1,6 +1,6 @@
 package com.team4.wildlifetracker.controller;
 
-import com.team4.wildlifetracker.model.User;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
-            User created = userService.registerUser(request.getUsername(), request.getPassword());
+            UserResponse created = userService.registerUser(request.getUsername(), request.getPassword());
             return ResponseEntity.ok(created);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -36,7 +36,7 @@ public class AuthController {
     // -------------------------
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Optional<User> user = userService.login(request.getUsername(), request.getPassword());
+        Optional<UserResponse> user = userService.login(request.getUsername(), request.getPassword());
 
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
