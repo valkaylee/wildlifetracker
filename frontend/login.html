@@ -33,7 +33,7 @@
         <label>Password</label>
         <input type="password" id="loginPassword" placeholder="Enter your password" />
 
-        <button class="primary-btn">Login</button>
+        <button class="primary-btn" onclick="handleLogin()">Login</button>
 
         <p class="switch-text">
           Don't have an account?
@@ -55,7 +55,7 @@
         <label>Confirm Password</label>
         <input type="password" id="signupConfirm" placeholder="Confirm password" />
 
-        <button class="primary-btn">Create Account</button>
+        <button class="primary-btn" onclick="handleSignup()">Create Account</button>
 
         <p class="switch-text">
           Already have an account?
@@ -66,8 +66,10 @@
     </div>
   </div>
 
-  <!-- JS FOR TOGGLE -->
+  <!-- JS FOR AUTHENTICATION AND TOGGLE -->
   <script>
+    const API_BASE_URL = "http://localhost:8080/api/users";
+
     function showSignup() {
       document.getElementById("loginForm").classList.add("hidden");
       document.getElementById("signupForm").classList.remove("hidden");
@@ -76,6 +78,83 @@
     function showLogin() {
       document.getElementById("signupForm").classList.add("hidden");
       document.getElementById("loginForm").classList.remove("hidden");
+    }
+
+    // Handle login
+    async function handleLogin() {
+      const username = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!username || !password) {
+        alert("Please enter both email and password");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username, password: password })
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("userId", user.id);
+          alert("Login successful!");
+          window.location.href = "profile.html";
+        } else {
+          const error = await response.text();
+          alert("Login failed: " + error);
+        }
+      } catch (error) {
+        alert("Error connecting to server: " + error.message);
+        console.error("Login error:", error);
+      }
+    }
+
+    // Handle signup
+    async function handleSignup() {
+      const username = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+      const confirmPassword = document.getElementById("signupConfirm").value.trim();
+
+      if (!username || !password || !confirmPassword) {
+        alert("Please fill in all fields");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert("Passwords do not match");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters long");
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username, password: password })
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("userId", user.id);
+          alert("Account created successfully!");
+          window.location.href = "profile.html";
+        } else {
+          const error = await response.text();
+          alert("Signup failed: " + error);
+        }
+      } catch (error) {
+        alert("Error connecting to server: " + error.message);
+        console.error("Signup error:", error);
+      }
     }
   </script>
 
