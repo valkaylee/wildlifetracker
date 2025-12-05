@@ -4,6 +4,7 @@ import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
 import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,10 +20,12 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
     private static final String UPLOAD_DIR = "uploads/profile-pictures/";
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
         // Create upload directory if it doesn't exist
         try {
             Files.createDirectories(Paths.get(UPLOAD_DIR));
@@ -37,7 +40,7 @@ public class UserService {
             throw new RuntimeException("Username already exists");
         }
 
-        User newUser = new User(username, password);
+        User newUser = new User(username, passwordEncoder.encode(password));
         User saved = userRepository.save(newUser);
         return toUserResponse(saved);
     }
@@ -45,7 +48,7 @@ public class UserService {
     public Optional<UserResponse> login(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
 
-        if (user.isPresent() && user.get().getPassword().equals(password)) {
+        if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
             return Optional.of(toUserResponse(user.get()));
         }
 
