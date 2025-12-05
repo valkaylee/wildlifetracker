@@ -1,7 +1,7 @@
 package com.team4.wildlifetracker.controller;
 
-import com.team4.wildlifetracker.model.User;
-import com.team4.wildlifetracker.service.UserService;
+import com.team4.wildlifetracker.dto.UserResponse;
+import com.team4.wildlifetracker.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,34 +9,32 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")  // Allow frontend to call backend
+@CrossOrigin(origins = "*")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
-    // -------------------------
-    // USER REGISTRATION
-    // -------------------------
+    // REGISTER ---------------------------------------------
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
         try {
-            User created = userService.registerUser(request.getUsername(), request.getPassword());
+            UserResponse created =
+                    authService.registerUser(req.getUsername(), req.getPassword());
             return ResponseEntity.ok(created);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // -------------------------
-    // USER LOGIN
-    // -------------------------
+    // LOGIN ------------------------------------------------
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        Optional<User> user = userService.login(request.getUsername(), request.getPassword());
+    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+        Optional<UserResponse> user =
+                authService.login(req.getUsername(), req.getPassword());
 
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
@@ -45,9 +43,7 @@ public class AuthController {
         return ResponseEntity.status(401).body("Invalid username or password");
     }
 
-    // -------------------------
-    // REQUEST BODY CLASSES
-    // -------------------------
+    // REQUEST BODIES ---------------------------------------
     static class RegisterRequest {
         private String username;
         private String password;

@@ -1,8 +1,8 @@
 package com.team4.wildlifetracker.service;
 
-
-import com.team4.wildlifeTracker.model.User;
-import com.team4.wildlifeTracker.repository.UserRepository;
+import com.team4.wildlifetracker.dto.UserResponse;
+import com.team4.wildlifetracker.model.User;
+import com.team4.wildlifetracker.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +18,39 @@ public class AuthService {
         this.repo = repo;
     }
 
-    public User register(String username, String password) {
+    // REGISTER ---------------------------------------------
+    public UserResponse registerUser(String username, String password) {
         username = username.toLowerCase();
+
+        // Since repository does NOT have existsByUsername()
         if (repo.findByUsername(username).isPresent()) {
-            throw new RuntimeException("Invalid login");
+            throw new RuntimeException("Username already taken");
         }
 
-        User u = new User(username, enc.encode(password));
-        return repo.save(u);
+        String hashedPassword = enc.encode(password);
+
+        User newUser = new User(username, hashedPassword);
+
+        User saved = repo.save(newUser);
+
+        return UserResponse.fromEntity(saved);
     }
 
-    public Optional<User> login(String username, String password) {
+    // LOGIN ------------------------------------------------
+    public Optional<UserResponse> login(String username, String password) {
         username = username.toLowerCase();
-        Optional<User> u = repo.findByUsername(username);
-        if (u.isEmpty()) return Optional.empty();
 
-        if (!u.get().getPassword().equals(enc.encode(password))) {
+        Optional<User> userOpt = repo.findByUsername(username);
+        if (userOpt.isEmpty()) {
             return Optional.empty();
         }
-        return u;
+
+        User user = userOpt.get();
+
+        if (!enc.matches(password, user.getPassword())) {
+            return Optional.empty();
+        }
+
+        return Optional.of(UserResponse.fromEntity(user));
     }
 }
