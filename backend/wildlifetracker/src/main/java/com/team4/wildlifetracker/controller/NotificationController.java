@@ -1,6 +1,6 @@
 package com.team4.wildlifetracker.controller;
 
-import com.team4.wildlifetracker.model.Notification;
+import com.team4.wildlifetracker.dto.NotificationResponse;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.service.NotificationService;
 import com.team4.wildlifetracker.service.UserService;
@@ -28,7 +28,7 @@ public class NotificationController {
         if (user.isEmpty()) {
             return ResponseEntity.badRequest().body("User not found");
         }
-        List<Notification> notifications = notificationService.getUserNotifications(user.get());
+        List<NotificationResponse> notifications = notificationService.getUserNotificationsAsDto(user.get());
         return ResponseEntity.ok(notifications);
     }
 

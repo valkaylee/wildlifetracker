@@ -1,5 +1,7 @@
 package com.team4.wildlifetracker.service;
 
+import com.team4.wildlifetracker.dto.SightingRequest;
+import com.team4.wildlifetracker.dto.SightingResponse;
 import com.team4.wildlifetracker.model.Sighting;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.SightingRepository;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SightingService {
@@ -21,7 +24,32 @@ public class SightingService {
         this.userRepository = userRepository;
     }
 
-    // CREATE
+    // CREATE from DTO
+    @Transactional
+    public SightingResponse createSighting(SightingRequest request) {
+        // Get user
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // Create entity
+        Sighting sighting = new Sighting(
+            request.getSpecies(),
+            request.getLocation(),
+            request.getDescription(),
+            request.getImageUrl(),
+            user
+        );
+        
+    	// Save the sighting
+        Sighting saved = sightingRepository.save(sighting);
+        
+        // Update user statistics
+        updateUserStatistics(user.getId());
+        
+        return toSightingResponse(saved);
+    }
+    
+    // CREATE from entity (for backward compatibility)
     @Transactional
     public Sighting createSighting(Sighting sighting) {
     	// Save the sighting
@@ -40,10 +68,24 @@ public class SightingService {
         return sightingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sighting not found"));
     }
+    
+    // READ (single) as DTO
+    public SightingResponse findByIdAsDto(Long id) {
+        Sighting sighting = sightingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sighting not found"));
+        return toSightingResponse(sighting);
+    }
 
     // READ (all)
     public List<Sighting> findAll() {
         return sightingRepository.findAll();
+    }
+    
+    // READ (all) as DTOs
+    public List<SightingResponse> findAllAsDto() {
+        return sightingRepository.findAll().stream()
+                .map(this::toSightingResponse)
+                .collect(Collectors.toList());
     }
 
     // UPDATE
@@ -105,5 +147,21 @@ public class SightingService {
         user.setLastActivityDate(LocalDateTime.now());
         
         userRepository.save(user);
+    }
+    
+    /**
+     * Converts Sighting entity to SightingResponse DTO.
+     */
+    public SightingResponse toSightingResponse(Sighting sighting) {
+        return new SightingResponse(
+            sighting.getId(),
+            sighting.getSpecies(),
+            sighting.getLocation(),
+            sighting.getDescription(),
+            sighting.getImageUrl(),
+            sighting.getTimestamp(),
+            sighting.getUser() != null ? sighting.getUser().getId() : null,
+            sighting.getUser() != null ? sighting.getUser().getUsername() : null
+        );
     }
 }

@@ -1,6 +1,7 @@
 package com.team4.wildlifetracker.service;
 
 import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,12 +63,12 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         // Act
-        User result = userService.registerUser("testuser", "password123");
+        UserResponse result = userService.registerUser("testuser", "password123");
 
         // Assert
         assertNotNull(result);
         assertEquals("testuser", result.getUsername());
-        assertEquals("password123", result.getPassword());
+        assertNull(result.getDisplayName()); // DTO doesn't expose password
         verify(userRepository).findByUsername("testuser");
         verify(userRepository).save(any(User.class));
     }
@@ -94,7 +95,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
 
         // Act
-        User result = userService.registerUser("", "password123");
+        UserResponse result = userService.registerUser("", "password123");
 
         // Assert
         assertNotNull(result);
@@ -109,12 +110,12 @@ class UserServiceTest {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(savedUser));
 
         // Act
-        Optional<User> result = userService.login("testuser", "password123");
+        Optional<UserResponse> result = userService.login("testuser", "password123");
 
         // Assert
         assertTrue(result.isPresent());
         assertEquals("testuser", result.get().getUsername());
-        assertEquals("password123", result.get().getPassword());
+        assertNotNull(result.get().getId());
         verify(userRepository).findByUsername("testuser");
     }
 
@@ -124,7 +125,7 @@ class UserServiceTest {
         when(userRepository.findByUsername("nonexistent")).thenReturn(Optional.empty());
 
         // Act
-        Optional<User> result = userService.login("nonexistent", "password123");
+        Optional<UserResponse> result = userService.login("nonexistent", "password123");
 
         // Assert
         assertTrue(result.isEmpty());
@@ -137,7 +138,7 @@ class UserServiceTest {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(savedUser));
 
         // Act
-        Optional<User> result = userService.login("testuser", "wrongpassword");
+        Optional<UserResponse> result = userService.login("testuser", "wrongpassword");
 
         // Assert
         assertTrue(result.isEmpty());
@@ -152,11 +153,11 @@ class UserServiceTest {
         when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(userWithEmptyPassword));
 
         // Act
-        Optional<User> result = userService.login("testuser", "");
+        Optional<UserResponse> result = userService.login("testuser", "");
 
         // Assert
         assertTrue(result.isPresent());
-        assertEquals("", result.get().getPassword());
+        assertEquals("testuser", result.get().getUsername());
     }
 
     // ==================== FIND BY ID TESTS ====================
@@ -203,7 +204,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User result = userService.updateProfile(1L, request);
+        UserResponse result = userService.updateProfile(1L, request);
 
         // Assert
         assertNotNull(result);
@@ -224,7 +225,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User result = userService.updateProfile(1L, request);
+        UserResponse result = userService.updateProfile(1L, request);
 
         // Assert
         assertNotNull(result);
@@ -243,7 +244,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User result = userService.updateProfile(1L, request);
+        UserResponse result = userService.updateProfile(1L, request);
 
         // Assert
         assertNotNull(result);
@@ -262,7 +263,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User result = userService.updateProfile(1L, request);
+        UserResponse result = userService.updateProfile(1L, request);
 
         // Assert
         assertNotNull(result);
@@ -281,7 +282,7 @@ class UserServiceTest {
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User result = userService.updateProfile(1L, request);
+        UserResponse result = userService.updateProfile(1L, request);
 
         // Assert
         assertNotNull(result);

@@ -4,6 +4,7 @@ import com.team4.wildlifetracker.dto.Command;
 import com.team4.wildlifetracker.dto.CommandResponse;
 import com.team4.wildlifetracker.dto.LeaderboardEntry;
 import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.model.Notification;
 import com.team4.wildlifetracker.model.Sighting;
 import com.team4.wildlifetracker.model.User;
@@ -241,8 +242,8 @@ public class CommandRouter {
                 request.setBio((String) params.get("bio"));
                 request.setProfilePictureUrl((String) params.get("profilePictureUrl"));
                 try {
-                    User updated = userService.updateProfile(userId, request);
-                    Map<String, Object> profile = buildProfileResponse(updated);
+                    UserResponse updated = userService.updateProfile(userId, request);
+                    Map<String, Object> profile = buildProfileResponseFromDto(updated);
                     yield CommandResponse.success("Profile updated", profile);
                 } catch (RuntimeException e) {
                     yield CommandResponse.error(e.getMessage());
@@ -317,6 +318,24 @@ public class CommandRouter {
         
         // Get rank
         LeaderboardEntry entry = leaderboardService.getUserRank(user.getId());
+        profile.put("rank", entry != null ? entry.getRank() : null);
+        
+        return profile;
+    }
+    
+    private Map<String, Object> buildProfileResponseFromDto(UserResponse userDto) {
+        Map<String, Object> profile = new HashMap<>();
+        profile.put("id", userDto.getId());
+        profile.put("username", userDto.getUsername());
+        profile.put("displayName", userDto.getDisplayName());
+        profile.put("bio", userDto.getBio());
+        profile.put("profilePictureUrl", userDto.getProfilePictureUrl());
+        profile.put("totalAnimalsLogged", userDto.getTotalAnimalsLogged());
+        profile.put("uniqueSpeciesCount", userDto.getUniqueSpeciesCount());
+        profile.put("lastActivityDate", userDto.getLastActivityDate());
+        
+        // Get rank
+        LeaderboardEntry entry = leaderboardService.getUserRank(userDto.getId());
         profile.put("rank", entry != null ? entry.getRank() : null);
         
         return profile;

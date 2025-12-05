@@ -1,7 +1,9 @@
 package com.team4.wildlifetracker.controller;
 
-import com.team4.wildlifetracker.model.Sighting;
+import com.team4.wildlifetracker.dto.SightingRequest;
+import com.team4.wildlifetracker.dto.SightingResponse;
 import com.team4.wildlifetracker.service.SightingService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +21,61 @@ public class SightingController {
 
     // CREATE
     @PostMapping
-    public Sighting createSighting(@RequestBody Sighting sighting) {
-        return sightingService.createSighting(sighting);
+    public ResponseEntity<SightingResponse> createSighting(@RequestBody SightingRequest request) {
+        try {
+            SightingResponse response = sightingService.createSighting(request);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     // READ (single)
     @GetMapping("/{id}")
-    public Sighting getSighting(@PathVariable Long id) {
-        return sightingService.findById(id);
+    public ResponseEntity<SightingResponse> getSighting(@PathVariable Long id) {
+        try {
+            SightingResponse response = sightingService.findByIdAsDto(id);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // READ (all)
     @GetMapping
-    public List<Sighting> getAllSightings() {
-        return sightingService.findAll();
+    public ResponseEntity<List<SightingResponse>> getAllSightings() {
+        List<SightingResponse> sightings = sightingService.findAllAsDto();
+        return ResponseEntity.ok(sightings);
     }
 
     // UPDATE
     @PutMapping("/{id}")
-    public Sighting updateSighting(@PathVariable Long id, @RequestBody Sighting updated) {
-        return sightingService.update(id, updated);
+    public ResponseEntity<SightingResponse> updateSighting(@PathVariable Long id, @RequestBody SightingRequest request) {
+        try {
+            // For now, we'll use the entity-based update and convert the result
+            // This would ideally be refactored to accept SightingRequest in the service
+            var existing = sightingService.findById(id);
+            existing.setSpecies(request.getSpecies());
+            existing.setLocation(request.getLocation());
+            existing.setDescription(request.getDescription());
+            existing.setImageUrl(request.getImageUrl());
+            
+            var updated = sightingService.update(id, existing);
+            SightingResponse response = sightingService.toSightingResponse(updated);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // DELETE
     @DeleteMapping("/{id}")
-    public String deleteSighting(@PathVariable Long id) {
-        sightingService.delete(id);
-        return "Deleted sighting " + id;
+    public ResponseEntity<String> deleteSighting(@PathVariable Long id) {
+        try {
+            sightingService.delete(id);
+            return ResponseEntity.ok("Deleted sighting " + id);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

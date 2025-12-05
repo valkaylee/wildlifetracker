@@ -1,6 +1,7 @@
 package com.team4.wildlifetracker.service;
 
 import com.team4.wildlifetracker.dto.ProfileUpdateRequest;
+import com.team4.wildlifetracker.dto.UserResponse;
 import com.team4.wildlifetracker.model.User;
 import com.team4.wildlifetracker.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -30,21 +31,22 @@ public class UserService {
         }
     }
 
-    public User registerUser(String username, String password) {
+    public UserResponse registerUser(String username, String password) {
         // Prevent duplicate usernames
         if (userRepository.findByUsername(username).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
 
         User newUser = new User(username, password);
-        return userRepository.save(newUser);
+        User saved = userRepository.save(newUser);
+        return toUserResponse(saved);
     }
 
-    public Optional<User> login(String username, String password) {
+    public Optional<UserResponse> login(String username, String password) {
         Optional<User> user = userRepository.findByUsername(username);
 
         if (user.isPresent() && user.get().getPassword().equals(password)) {
-            return user;
+            return Optional.of(toUserResponse(user.get()));
         }
 
         return Optional.empty();
@@ -54,7 +56,11 @@ public class UserService {
         return userRepository.findById(id);
     }
     
-    public User updateProfile(Long userId, ProfileUpdateRequest request) {
+    public Optional<UserResponse> findByIdAsDto(Long id) {
+        return userRepository.findById(id).map(this::toUserResponse);
+    }
+    
+    public UserResponse updateProfile(Long userId, ProfileUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -70,7 +76,8 @@ public class UserService {
             user.setProfilePictureUrl(request.getProfilePictureUrl());
         }
 
-        return userRepository.save(user);
+        User saved = userRepository.save(user);
+        return toUserResponse(saved);
     }
 
     public String uploadProfilePicture(Long userId, MultipartFile file) throws IOException {
@@ -105,5 +112,22 @@ public class UserService {
         userRepository.save(user);
 
         return fileUrl;
+    }
+    
+    /**
+     * Converts User entity to UserResponse DTO.
+     * Excludes sensitive information like password.
+     */
+    public UserResponse toUserResponse(User user) {
+        return new UserResponse(
+            user.getId(),
+            user.getUsername(),
+            user.getDisplayName(),
+            user.getBio(),
+            user.getProfilePictureUrl(),
+            user.getTotalAnimalsLogged(),
+            user.getUniqueSpeciesCount(),
+            user.getLastActivityDate()
+        );
     }
 }
