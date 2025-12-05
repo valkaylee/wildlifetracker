@@ -2,23 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Wildlife Tracker – Home</title>
+  <title>Campus Map – Wildlife Tracker</title>
 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  
   <link rel="stylesheet" href="css/common.css" />
   <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/map.css" />
 </head>
 
 <body>
 
-  <!-- NAV BAR (EMPTY — JS WILL FILL IT) -->
+  <!-- NAV BAR -->
   <div id="navbar"></div>
 
-  <div class="page-container">
-    <h1>Welcome to Wildlife Tracker</h1>
+  <!-- MAIN CONTENT -->
+  <div class="map-container">
+    
+    <!-- SEARCH BAR -->
+    <div class="search-container">
+      <span class="material-symbols-rounded search-icon">search</span>
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Search sightings by species, location, description, or user..."
+        autocomplete="off"
+      />
+      <div id="searchSuggestions" class="search-suggestions"></div>
+      <div id="searchHistory" class="search-history"></div>
+    </div>
 
-    <div class="card">
-      <p>Track and explore wildlife sightings across the USC campus.</p>
-      <button onclick="location.href='map.html'">Go to Map</button>
+    <!-- MAP SECTION -->
+    <div class="map-section">
+      <div class="map-wrapper">
+        <img src="images/campus_map.png" alt="USC Campus Map" class="campus-map" id="campusMap" />
+        <div id="sightingMarkers" class="sighting-markers"></div>
+      </div>
+    </div>
+
+    <!-- RECENT SIGHTINGS LIST -->
+    <div class="sightings-section">
+      <h2 class="section-title">Recent Sightings</h2>
+      <div id="sightingsGrid" class="sightings-grid">
+        <p class="loading-message">Loading sightings...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SIGHTING DETAILS MODAL -->
+  <div id="sightingModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">
+        <span class="material-symbols-rounded">close</span>
+      </button>
+      <h2 class="modal-title">Sighting Details</h2>
+      <div id="modalBody" class="modal-body">
+        <!-- Content will be populated by JavaScript -->
+      </div>
     </div>
   </div>
 
@@ -27,15 +70,14 @@
     fetch("navbar.html")
       .then(res => res.text())
       .then(html => {
-        // Insert navbar html
         document.getElementById("navbar").innerHTML = html;
 
-        /* ========== AUTO-HIGHLIGHT ========== */
-        const currentPage = location.pathname.split("/").pop();
-        const navLinks = document.querySelectorAll(".side-nav a");
+        // RUN ACTIVE HIGHLIGHT NOW (ONLY AFTER NAVBAR EXISTS)
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
 
-        navLinks.forEach(link => {
-          if (link.getAttribute("href") === currentPage) {
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
             link.classList.add("active");
           }
         });
@@ -60,7 +102,10 @@
           };
         }
       });
-    </script>
+  </script>
+
+  <!-- MAP JS -->
+  <script src="js/map.js"></script>
 
 </body>
 </html>

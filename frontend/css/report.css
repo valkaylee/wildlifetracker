@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #1f2937;
+}
+
+.report-container {
+  margin-left: 240px; /* Account for sidebar */
+  padding: 40px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ============================================
+   FORM CARD
+============================================ */
+.report-form-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 700px;
+  width: 100%;
+}
+
+/* ============================================
+   FORM HEADER
+============================================ */
+.form-header {
+  background: linear-gradient(135deg, #2e7d32 0%, #f7cd42 100%);
+  padding: 32px 40px;
+  color: white;
+}
+
+.form-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: white;
+}
+
+.form-subtitle {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+/* ============================================
+   FORM BODY
+============================================ */
+.form-body {
+  padding: 40px;
+}
+
+.form-group {
+  margin-bottom: 28px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f7f8fa;
+  transition: all 0.2s;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+  border-color: #ff6b35;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ============================================
+   FILE INPUT
+============================================ */
+.file-input-wrapper {
+  position: relative;
+}
+
+.file-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f7f8fa;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.file-input-label:hover {
+  border-color: #ff6b35;
+  background: white;
+}
+
+.file-input:focus + .file-input-label {
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+
+.file-input-text {
+  font-size: 15px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.file-input-name {
+  font-size: 14px;
+  color: #718096;
+  margin-left: auto;
+  margin-right: 12px;
+}
+
+.file-icon {
+  font-size: 24px;
+  color: #ff6b35;
+}
+
+/* ============================================
+   SUBMIT BUTTON
+============================================ */
+.submit-btn {
+  width: 100%;
+  padding: 16px 24px;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 3px 8px rgba(46, 125, 50, 0.25);
+}
+
+.submit-btn:hover {
+  background: #1b5e20;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+.submit-btn .material-symbols-rounded {
+  font-size: 24px;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   FORM MESSAGES
+============================================ */
+.form-message {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.form-message-success {
+  background: #c8e6c9;
+  color: #2e7d32;
+  border: 2px solid #4caf50;
+}
+
+.form-message-error {
+  background: #ffcdd2;
+  color: #c62828;
+  border: 2px solid #e53e3e;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 768px) {
+  .report-container {
+    margin-left: 0;
+    padding: 20px;
+  }
+  
+  .form-header {
+    padding: 24px 28px;
+  }
+  
+  .form-header h1 {
+    font-size: 24px;
+  }
+  
+  .form-body {
+    padding: 28px;
+  }
+}
+
