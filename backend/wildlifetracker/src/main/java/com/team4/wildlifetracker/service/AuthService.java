@@ -1,8 +1,8 @@
 package com.team4.wildlifetracker.service;
 
 
-import com.team4.wildlifeTracker.model.User;
-import com.team4.wildlifeTracker.repository.UserRepository;
+import com.team4.wildlifetracker.model.User;
+import com.team4.wildlifetracker.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,8 @@ public class AuthService {
         Optional<User> u = repo.findByUsername(username);
         if (u.isEmpty()) return Optional.empty();
 
-        if (!u.get().getPassword().equals(enc.encode(password))) {
+        // BCrypt password verification - use matches() method, not equals()
+        if (!enc.matches(password, u.get().getPassword())) {
             return Optional.empty();
         }
         return u;
