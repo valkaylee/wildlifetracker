@@ -29,7 +29,7 @@ public class Sighting {
     private Integer pixelY;
 
     // Link to the user who created this sighting
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
