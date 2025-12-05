@@ -40,3 +40,20 @@ Explanation
 	Fix: I found out that AI was checking for the wrong url names, and I simply had to change them to the correct file names
 	Expalantion: This is a super important UI component as users need to be able to see what page they are super easily.
 		Furthermore, by not checking the correct file name, we are unable to ever make the code work unless we fix it.
+
+4. User Profile Backend
+	Prompts: I wanted to ensure that when a user updates their profile, these changes get saved to the database, I asked AI
+	for help in particular with saving the image for the profile.
+	Issues: File upload configuration was missing.
+	Fix: AI forgot to tell me that I had to update my application.properties file with the file upload configuration, 
+	though I was able to figure it out quickly.
+	Explanation: By not having the file upload configuration, we would not be able to upload files, which is a key part 
+	of updating user profile.
+
+5. User Statistics
+	Prompts: I want to be able to calculate user statistics and use it to calculate and create the user leaderboard.
+	Issues: The correct key was not being used for the user statistics and all users had 0 total sightings (which was not true)
+	Fix: AI was using the wrong key when trying to calculate the statistics, I went ahead and changed it to use the right
+	key and then everything was working correctly.
+	Explanation: We need to use the correct primary key otherwise it leads to unpredictable behavior since the key is not 
+	guaranteed to be unique.
