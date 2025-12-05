@@ -1,12 +1,10 @@
 package com.team4.wildlifetracker.dto;
 
+import com.team4.wildlifetracker.model.User;
 import java.time.LocalDateTime;
 
-/**
- * DTO for User responses.
- * Prevents exposing sensitive fields like password.
- */
 public class UserResponse {
+
     private Long id;
     private String username;
     private String displayName;
@@ -18,9 +16,15 @@ public class UserResponse {
 
     public UserResponse() {}
 
-    public UserResponse(Long id, String username, String displayName, String bio, 
-                       String profilePictureUrl, Integer totalAnimalsLogged, 
-                       Integer uniqueSpeciesCount, LocalDateTime lastActivityDate) {
+    public UserResponse(Long id,
+                        String username,
+                        String displayName,
+                        String bio,
+                        String profilePictureUrl,
+                        Integer totalAnimalsLogged,
+                        Integer uniqueSpeciesCount,
+                        LocalDateTime lastActivityDate) {
+
         this.id = id;
         this.username = username;
         this.displayName = displayName;
@@ -31,68 +35,25 @@ public class UserResponse {
         this.lastActivityDate = lastActivityDate;
     }
 
-    // Getters and setters
-    public Long getId() {
-        return id;
+    public static UserResponse fromEntity(User u) {
+        return new UserResponse(
+                u.getId(),
+                u.getUsername(),
+                u.getDisplayName(),
+                u.getBio(),
+                u.getProfilePictureUrl(),
+                u.getTotalAnimalsLogged(),
+                u.getUniqueSpeciesCount(),
+                u.getLastActivityDate()
+        );
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
-    }
-
-    public Integer getTotalAnimalsLogged() {
-        return totalAnimalsLogged;
-    }
-
-    public void setTotalAnimalsLogged(Integer totalAnimalsLogged) {
-        this.totalAnimalsLogged = totalAnimalsLogged;
-    }
-
-    public Integer getUniqueSpeciesCount() {
-        return uniqueSpeciesCount;
-    }
-
-    public void setUniqueSpeciesCount(Integer uniqueSpeciesCount) {
-        this.uniqueSpeciesCount = uniqueSpeciesCount;
-    }
-
-    public LocalDateTime getLastActivityDate() {
-        return lastActivityDate;
-    }
-
-    public void setLastActivityDate(LocalDateTime lastActivityDate) {
-        this.lastActivityDate = lastActivityDate;
-    }
+    public Long getId() { return id; }
+    public String getUsername() { return username; }
+    public String getDisplayName() { return displayName; }
+    public String getBio() { return bio; }
+    public String getProfilePictureUrl() { return profilePictureUrl; }
+    public Integer getTotalAnimalsLogged() { return totalAnimalsLogged; }
+    public Integer getUniqueSpeciesCount() { return uniqueSpeciesCount; }
+    public LocalDateTime getLastActivityDate() { return lastActivityDate; }
 }
