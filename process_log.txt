@@ -1,3 +1,66 @@
+Team 4 AI Log: 
+
+Kaylee Hou's AI Log: 
+
+1. Prompt (Clarity)
+"Create a user profile page that shows: Profile picture, Description, Statistics 
+(Total Sightings, Unique Species, Favorite Species)"
+
+"Update the entire website's color scheme and font to match the profile.html page"
+
+2. Issues (Specificity)
+Profile page showed placeholder data because the backend UserProfileController 
+only returned a placeholder string. Needed to implement the full endpoint that 
+calculates statistics from sightings.
+
+Map markers weren't appearing because the location-to-coordinate mapping system was 
+missing. Sightings only had text locations like "Trousdale Parkway" but no way to 
+convert them to x/y coordinates on the map image.
+
+Search functionality wasn't working because the frontend was trying to call 
+/api/search but the backend SearchController expected a query parameter, and 
+the frontend wasn't handling the response format correctly.
+Admin panel showed "0" for all statistics because the JavaScript was trying to 
+fetch from /api/users endpoint that didn't exist yet - needed to add findAll() 
+ to UserService and corresponding GET endpoint.
+
+3. Fix (Correctness)
+Implemented UserProfileController with full logic:
+@GetMapping("/{userId}")
+public ResponseEntity<?> getProfile(@PathVariable Long userId) {
+    // Get user sightings, calculate statistics (total, unique species, favorite)
+    // Build species list with counts, recent sightings, and photo gallery
+    // Return complete profile data as JSON
+}
+Created location coordinate mapping system in map.js:
+const LOCATION_COORDINATES = {
+  'trousdale parkway': { x: 45, y: 50 },
+  'alumni park': { x: 50, y: 45 },
+  // ... more mappings
+};
+// Then place markers using percentage-based positioning on the map image
+Fixed search to handle both API search and client-side fallback:
+async function performSearch(query) {
+    const response = await fetch(`${API_BASE}/search?query=${encodeURIComponent(query)}`);
+    // Fallback to client-side filtering if API fails
+}
+Added UserService.findAll() and UserController GET endpoint:
+public List<User> findAll() {
+    return userRepository.findAll();
+}
+@GetMapping
+public ResponseEntity<?> getAllUsers() {
+    return ResponseEntity.ok(userService.findAll());
+}
+4. Explanation (Depth)
+These fixes ensure the application frontend works accordingly to our design doc. 
+The profile controller demonstrates proper service layer separation and data 
+aggregation. The coordinate mapping enables visual representation of sightings 
+on a static map image. The search fallback improves robustness by handling API 
+failures gracefully. Adding the users endpoint completes the admin dashboard 
+functionality, showing proper REST API design and repository pattern usage. 
+
+
 Prompts
 
 	-Asked for help generating the initial HTML/CSS templates for the project’s static pages (landing, about, help, and settings). The AI produced the basic layout, including the navigation bar and page structure, but I manually adjusted the spacing, alignment, colors, and overall styling.
@@ -57,3 +120,6 @@ Explanation
 	key and then everything was working correctly.
 	Explanation: We need to use the correct primary key otherwise it leads to unpredictable behavior since the key is not 
 	guaranteed to be unique.
+
+
+
