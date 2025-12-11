@@ -1,3 +1,6 @@
+-- uncomment the following line to reset datbase
+-- DROP DATABASE IF EXISTS wildlife;
+
 -- ===============================
 -- Create Database
 -- ===============================
@@ -7,101 +10,86 @@ USE wildlife;
 -- ===============================
 -- Users Table
 -- ===============================
+-- Primary table for user accounts and authentication
+-- Also stores profile information (denormalized for simplicity)
 CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('USER', 'ADMIN') DEFAULT 'USER',
-    notif_pref ENUM('EMAIL', 'SMS', 'NONE') DEFAULT 'EMAIL',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-);
-
--- ===============================
--- Species Table
--- ===============================
-CREATE TABLE species (
-    species_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(120) NOT NULL,
-    category VARCHAR(100) NOT NULL
+    
+    -- Profile fields
+    display_name VARCHAR(100),
+    bio VARCHAR(500),
+    profile_picture_url LONGTEXT,
+    
+    -- Statistics (calculated from sightings)
+    total_animals_logged INT NOT NULL DEFAULT 0,
+    unique_species_count INT NOT NULL DEFAULT 0,
+    last_activity_date DATETIME,
+    
+    INDEX idx_username (username)
 );
 
 -- ===============================
 -- Sightings Table
 -- ===============================
+-- Wildlife sightings reported by users
+-- Species stored as VARCHAR (not normalized) for flexibility
+-- Images stored in image_url field and displayed in user's photo gallery on profile page
 CREATE TABLE sightings (
-    sighting_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    species_id BIGINT NOT NULL,
-    title VARCHAR(200) NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    species VARCHAR(255),
+    location VARCHAR(255),
     description TEXT,
-    img_url VARCHAR(255),
-    latitude DECIMAL(9,6) NOT NULL,
-    longitude DECIMAL(9,6) NOT NULL,
-    detection_radius FLOAT,
-    status ENUM('PENDING', 'VERIFIED', 'REJECTED') DEFAULT 'PENDING',
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_sightings_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_sightings_species
-        FOREIGN KEY (species_id) REFERENCES species(species_id)
-        ON DELETE CASCADE
-);
-
--- ===============================
--- Reports Table
--- ===============================
-CREATE TABLE reports (
-    report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    sighting_id BIGINT NOT NULL,
-    user_id INT NOT NULL,
-    reason VARCHAR(255) NOT NULL,
+    image_url LONGTEXT,  
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_reports_sighting
-        FOREIGN KEY (sighting_id) REFERENCES sightings(sighting_id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_reports_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
-        ON DELETE CASCADE
+    
+    -- Map coordinates (pixel positions on campus map)
+    pixel_x INT,
+    pixel_y INT,
+    
+    -- Foreign key to user
+    user_id BIGINT,
+    
+    CONSTRAINT fk_sightings_user
+        FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE SET NULL,
+    
+    INDEX idx_species (species),
+    INDEX idx_location (location),
+    INDEX idx_user_id (user_id),
+    INDEX idx_timestamp (timestamp)
 );
 
 -- ===============================
--- Profiles Table
+-- Species Table (Optional - for future use)
 -- ===============================
+-- Normalized species reference table
+-- Currently not used by application, but available for future enhancement
+CREATE TABLE species (
+    species_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(120) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    
+    INDEX idx_name (name),
+    INDEX idx_category (category)
+);
+
+-- ===============================
+-- Profiles Table (Optional - for future use)
+-- ===============================
+-- Separate profile statistics table
+-- Entity exists in code but currently profile data is stored in users table
 CREATE TABLE profiles (
-    profile_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL UNIQUE,
+    profile_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL UNIQUE,
     animals_logged BIGINT DEFAULT 0,
     species_seen BIGINT DEFAULT 0,
     assists BIGINT DEFAULT 0,
     most_frequent_area VARCHAR(255),
 
     CONSTRAINT fk_profiles_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
+        FOREIGN KEY (user_id) REFERENCES users(id)
         ON DELETE CASCADE
 );
 
--- ===============================
--- Notifications Table
--- ===============================
-CREATE TABLE notifications (
-    notif_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    delivery_method ENUM('EMAIL', 'SMS', 'PUSH') NOT NULL,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    sighting_id BIGINT,
-
-    CONSTRAINT fk_notifications_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_notifications_sighting
-        FOREIGN KEY (sighting_id) REFERENCES sightings(sighting_id)
-        ON DELETE SET NULL
-);
