@@ -82,24 +82,4 @@ public class UserProfileController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    // UPLOAD profile picture
-    @PostMapping("/{userId}/upload-picture")
-    public ResponseEntity<?> uploadProfilePicture(
-            @PathVariable Long userId,
-            @RequestParam("file") MultipartFile file) {
-        try {
-            String fileUrl = userService.uploadProfilePicture(userId, file);
-
-            Map<String, String> response = new HashMap<>();
-            response.put("profilePictureUrl", fileUrl);
-            response.put("message", "Profile picture uploaded successfully");
-
-            return ResponseEntity.ok(response);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body("Failed to upload file: " + e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

@@ -47,6 +47,19 @@ public class UserController {
                    .orElseGet(() -> ResponseEntity.notFound().build());
     }
     
+    // UPDATE user profile (alternative endpoint for frontend compatibility)
+    @PutMapping("/{id}/profile")
+    public ResponseEntity<?> updateUserProfile(
+            @PathVariable Long id,
+            @RequestBody com.team4.wildlifetracker.dto.ProfileUpdateRequest request) {
+        try {
+            UserResponse updatedUser = userService.updateProfile(id, request);
+            return ResponseEntity.ok(updatedUser);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
     // Request DTOs
     static class RegisterRequest {
         private String username;

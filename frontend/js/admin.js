@@ -121,7 +121,7 @@ function displaySightingsTable(sightings, filteredSightings = null) {
   const dataToShow = filteredSightings || sightings;
   
   if (dataToShow.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No sightings found</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-message">No sightings found</td></tr>';
     return;
   }
   
@@ -141,16 +141,6 @@ function displaySightingsTable(sightings, filteredSightings = null) {
         <td>${date}</td>
         <td>${time}</td>
         <td>${username}</td>
-        <td>
-          <div class="action-buttons">
-            <button class="action-btn view" onclick="viewSighting(${sighting.id})" title="View Details">
-              <span class="material-symbols-rounded">visibility</span>
-            </button>
-            <button class="action-btn delete" onclick="deleteSighting(${sighting.id})" title="Delete">
-              <span class="material-symbols-rounded">delete</span>
-            </button>
-          </div>
-        </td>
       </tr>
     `;
   }).join('');

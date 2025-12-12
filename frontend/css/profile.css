@@ -25,6 +25,7 @@ body {
   gap: 24px;
   margin: 0 0 32px 0;
   border-radius: 16px;
+  position: relative;
 }
 
 .profile-picture-container {
@@ -40,6 +41,10 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+.user-info {
+  flex: 1;
+}
+
 .user-info h2 {
   margin: 0 0 8px 0;
   font-size: 32px;
@@ -53,6 +58,32 @@ body {
   color: #4a5568;
   line-height: 1.6;
   max-width: 600px;
+}
+
+.edit-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-start;
+  margin-left: auto;
+}
+
+.edit-profile-btn:hover {
+  background: #2e7d32;
+  color: white;
+}
+
+.edit-profile-btn .material-symbols-rounded {
+  font-size: 20px;
 }
 
 /* ============================================

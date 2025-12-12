@@ -27,8 +27,12 @@
       </div>
       <div class="user-info">
         <h2 id="displayName">Wildlife Observer</h2>
-        <p id="userBio" class="user-bio">No bio yet. Add a description in settings!</p>
+        <p id="userBio" class="user-bio">No bio yet. Click Edit Profile to add a description!</p>
       </div>
+      <button id="editProfileBtn" class="edit-profile-btn" onclick="window.location.href='edit-profile.html'">
+        <span class="material-symbols-rounded">edit</span>
+        Edit Profile
+      </button>
     </div>
 
     <!-- STATISTICS CARDS -->
@@ -130,9 +134,13 @@
         const logoutBtn = document.getElementById("logoutBtn");
         const loggedIn = localStorage.getItem("loggedIn") === "true";
 
+        // Hide/show profile link based on login state
+        const profileLink = document.querySelector('.side-nav a[href="profile.html"]');
+        
         if (loggedIn) {
           loginBtn.style.display = "none";
           logoutBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "flex";
           logoutBtn.onclick = () => {
             localStorage.setItem("loggedIn", "false");
             location.href = "login.html";
@@ -140,6 +148,7 @@
         } else {
           logoutBtn.style.display = "none";
           loginBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "none";
           loginBtn.onclick = () => {
             location.href = "login.html";
           };
