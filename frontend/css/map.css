@@ -418,6 +418,16 @@ body {
   border-radius: 8px;
 }
 
+.sighting-modal-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
 /* ============================================
    RESPONSIVE
 ============================================ */

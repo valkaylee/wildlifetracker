@@ -209,7 +209,25 @@ function showSightingDetails(sighting) {
     : 'Unknown';
   const displayName = sighting.displayName || 'Unknown';
   
+  // Build image HTML if imageUrl exists
+  // Match the profile page logic: convert relative paths to absolute URLs
+  let imageHtml = '';
+  if (sighting.imageUrl) {
+    let imageSrc = sighting.imageUrl;
+    // If it's a relative path, make it absolute
+    if (!imageSrc.startsWith('http') && !imageSrc.startsWith('data:')) {
+      imageSrc = `http://localhost:8080${imageSrc}`;
+    }
+    imageHtml = `<div class="modal-field">
+        <span class="modal-field-label">Image</span>
+        <div class="modal-field-value">
+          <img src="${imageSrc}" alt="${escapeHtml(sighting.species || 'Animal')}" class="sighting-modal-image" onerror="this.parentElement.parentElement.style.display='none'" />
+        </div>
+      </div>`;
+  }
+  
   modalBody.innerHTML = `
+    ${imageHtml}
     <div class="modal-field">
       <span class="modal-field-label">Species</span>
       <div class="modal-field-value">${escapeHtml(sighting.species || 'Unknown')}</div>
