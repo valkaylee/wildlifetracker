@@ -110,7 +110,7 @@
     async function loadCurrentProfile() {
       try {
         const userId = getCurrentUserId();
-        const response = await fetch(`${API_BASE}/users/${userId}`);
+        const response = await fetch(`${API_BASE}/profile/${userId}`);
         if (!response.ok) throw new Error('Failed to load profile');
         
         const userData = await response.json();
@@ -175,7 +175,7 @@
         if (bio) updateData.bio = bio;
         if (profilePictureUrl) updateData.profilePictureUrl = profilePictureUrl;
 
-        const response = await fetch(`${API_BASE}/users/${userId}/profile`, {
+        const response = await fetch(`${API_BASE}/profile/${userId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
