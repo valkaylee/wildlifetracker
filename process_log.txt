@@ -104,23 +104,65 @@ Explanation
 	Expalantion: This is a super important UI component as users need to be able to see what page they are super easily.
 		Furthermore, by not checking the correct file name, we are unable to ever make the code work unless we fix it.
 
-Sriya Pratipati: 
- User Profile Backend
-	Prompts: I wanted to ensure that when a user updates their profile, these changes get saved to the database, I asked AI
-	for help in particular with saving the image for the profile.
-	Issues: File upload configuration was missing.
-	Fix: AI forgot to tell me that I had to update my application.properties file with the file upload configuration, 
-	though I was able to figure it out quickly.
-	Explanation: By not having the file upload configuration, we would not be able to upload files, which is a key part 
-	of updating user profile.
+Sriya Pratipati's AI Log: 
+ 1. User Profile Backend - File Upload Configuration
+Prompt (Clarity)
+"Implement user profile with display name, bio, and profile picture upload functionality."
+Issues (Specificity)
+File upload returned 500 error because multipart configuration was missing from application.properties.
+Uploaded files weren't accessible via HTTP because Spring wasn't serving static resources from the uploads directory.
+Fix (Correctness)
+Added to application.properties:
+propertiesspring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=5MB
+Created WebConfig:
+java@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploads/**").addResourceLocations("file:uploads/");
+    }
+}
+Explanation (Depth)
+Multipart configuration enables file processing and prevents DOS attacks through size limits. WebConfig maps HTTP URLs to file system so browsers can fetch uploaded images.
 
- User Statistics
-	Prompts: I want to be able to calculate user statistics and use it to calculate and create the user leaderboard.
-	Issues: The correct key was not being used for the user statistics and all users had 0 total sightings (which was not true)
-	Fix: AI was using the wrong key when trying to calculate the statistics, I went ahead and changed it to use the right
-	key and then everything was working correctly.
-	Explanation: We need to use the correct primary key otherwise it leads to unpredictable behavior since the key is not 
-	guaranteed to be unique.
+2. User Statistics - Incorrect Query
+Prompt (Clarity)
+"Track user statistics (total sightings, unique species) and auto-update when sightings change. Use for leaderboard ranking."
+Issues (Specificity)
+All users showed 0 sightings because statistics calculation loaded all sightings into memory using streams instead of database queries.
+Fix (Correctness)
+Added efficient queries to SightingRepository:
+javaLong countByUserId(Long userId);
 
+@Query("SELECT COUNT(DISTINCT s.species) FROM Sighting s WHERE s.user.id = :userId")
+Long countUniqueSpeciesByUserId(@Param("userId") Long userId);
+Updated SightingService:
+javaprivate void updateUserStatistics(Long userId) {
+    user.setTotalAnimalsLogged(sightingRepository.countByUserId(userId).intValue());
+    user.setUniqueSpeciesCount(sightingRepository.countUniqueSpeciesByUserId(userId).intValue());
+}
+Explanation (Depth)
+Database-level queries prevent memory issues and N+1 problems. SQL's COUNT(DISTINCT) is optimized for this operation rather than loading thousands of records into Java collections.
 
+3. Password Security - Plain Text Storage
+Prompt (Clarity)
+"Create authentication with registration and login endpoints. Validate credentials and reject duplicates."
+Issues (Specificity)
+Passwords stored in plain text - anyone with database access could read them.
+API responses included password field in JSON responses.
+Fix (Correctness)
+Added BCrypt hashing:
+javapublic User registerUser(String username, String password) {
+    String hashed = passwordEncoder.encode(password);
+    return userRepository.save(new User(username, hashed));
+}
 
+public Optional<User> login(String username, String password) {
+    if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
+        return user;
+    }
+}
+Created UserDTO without password field and updated controllers:
+javareturn ResponseEntity.ok(new UserDTO(created));
+Explanation (Depth)
+BCrypt provides one-way hashing with automatic salting to prevent rainbow table attacks. DTO pattern ensures passwords never appear in API responses, following security best practices for authentication systems.
