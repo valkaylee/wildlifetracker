@@ -64,6 +64,12 @@ public class UserService {
         return userRepository.findById(id).map(this::toUserResponse);
     }
     
+    public java.util.List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::toUserResponse)
+                .collect(java.util.stream.Collectors.toList());
+    }
+    
     public UserResponse updateProfile(Long userId, ProfileUpdateRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));

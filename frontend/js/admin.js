@@ -78,9 +78,6 @@ function displayStatistics(sightings, users) {
   // Total users
   const totalUsers = Array.isArray(users) ? users.length : 0;
   document.getElementById('totalUsers').textContent = totalUsers;
-  
-  // Pending reports (for now, we'll set to 0 as it's not implemented yet)
-  document.getElementById('pendingReports').textContent = '0';
 }
 
 // Display user leaderboard
@@ -109,7 +106,7 @@ async function displayLeaderboard() {
           </div>
         </td>
         <td class="user-col">
-          <span class="username">${entry.username || 'Unknown'}</span>
+          <span class="username">${entry.displayName || entry.username || 'Unknown'}</span>
         </td>
         <td class="sightings-col">
           <span class="sightings-count">${entry.totalAnimalsLogged || 0}</span>
@@ -143,7 +140,7 @@ function displaySightingsTable(sightings, filteredSightings = null) {
     const time = sighting.timestamp
       ? new Date(sighting.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
       : 'N/A';
-    const username = sighting.user ? sighting.user.username : 'Unknown';
+    const displayName = sighting.displayName || 'Unknown';
     
     return `
       <tr>
@@ -151,7 +148,7 @@ function displaySightingsTable(sightings, filteredSightings = null) {
         <td>${sighting.location || 'Unknown'}</td>
         <td>${date}</td>
         <td>${time}</td>
-        <td>${username}</td>
+        <td>${displayName}</td>
       </tr>
     `;
   }).join('');
@@ -173,11 +170,11 @@ function setupSearch(sightings) {
     const filtered = allSightings.filter(sighting => {
       const species = (sighting.species || '').toLowerCase();
       const location = (sighting.location || '').toLowerCase();
-      const username = (sighting.user?.username || '').toLowerCase();
+      const displayName = (sighting.displayName || '').toLowerCase();
       
       return species.includes(query) || 
              location.includes(query) || 
-             username.includes(query);
+             displayName.includes(query);
     });
     
     displaySightingsTable(allSightings, filtered);

@@ -17,12 +17,13 @@ public class SightingResponse {
     private Integer pixelY;
     private Long userId;
     private String username;
+    private String displayName;
 
     public SightingResponse() {}
 
     public SightingResponse(Long id, String species, String location, String description,
                            String imageUrl, LocalDateTime timestamp, Integer pixelX, Integer pixelY,
-                           Long userId, String username) {
+                           Long userId, String username, String displayName) {
         this.id = id;
         this.species = species;
         this.location = location;
@@ -33,6 +34,7 @@ public class SightingResponse {
         this.pixelY = pixelY;
         this.userId = userId;
         this.username = username;
+        this.displayName = displayName;
     }
 
     // Getters and setters
@@ -114,5 +116,13 @@ public class SightingResponse {
 
     public void setPixelY(Integer pixelY) {
         this.pixelY = pixelY;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

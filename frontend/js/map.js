@@ -158,7 +158,7 @@ function displaySightingsGrid(sightings) {
     const date = sighting.timestamp 
       ? new Date(sighting.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' })
       : 'Unknown';
-    const username = sighting.user ? sighting.user.username : 'Unknown';
+    const displayName = sighting.displayName || 'Unknown';
     
     return `
       <div class="sighting-card" onclick="showSightingDetailsById(${sighting.id})">
@@ -168,7 +168,7 @@ function displaySightingsGrid(sightings) {
         </div>
         <p class="sighting-location">${sighting.location || 'Unknown Location'}</p>
         <p class="sighting-description">${sighting.description || 'No description provided.'}</p>
-        <p class="sighting-user">Spotted by: ${username}</p>
+        <p class="sighting-user">Spotted by: ${displayName}</p>
       </div>
     `;
   }).join('');
@@ -207,7 +207,7 @@ function showSightingDetails(sighting) {
   const time = sighting.timestamp
     ? new Date(sighting.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
     : 'Unknown';
-  const username = sighting.user ? sighting.user.username : 'Unknown';
+  const displayName = sighting.displayName || 'Unknown';
   
   modalBody.innerHTML = `
     <div class="modal-field">
@@ -228,7 +228,7 @@ function showSightingDetails(sighting) {
     </div>
     <div class="modal-field">
       <span class="modal-field-label">Reported by</span>
-      <div class="modal-field-value">${escapeHtml(username)}</div>
+      <div class="modal-field-value">${escapeHtml(displayName)}</div>
     </div>
     <div class="modal-field">
       <span class="modal-field-label">Description</span>
@@ -337,12 +337,12 @@ function performClientSearch(query) {
     const species = (sighting.species || '').toLowerCase();
     const location = (sighting.location || '').toLowerCase();
     const description = (sighting.description || '').toLowerCase();
-    const username = (sighting.user?.username || '').toLowerCase();
+    const displayName = (sighting.displayName || '').toLowerCase();
     
     return species.includes(lowerQuery) ||
            location.includes(lowerQuery) ||
            description.includes(lowerQuery) ||
-           username.includes(lowerQuery);
+           displayName.includes(lowerQuery);
   });
   
   displayMapMarkers(filteredSightings);

@@ -237,7 +237,8 @@ public class SightingService {
             sighting.getPixelX(),
             sighting.getPixelY(),
             sighting.getUser() != null ? sighting.getUser().getId() : null,
-            sighting.getUser() != null ? sighting.getUser().getUsername() : null
+            sighting.getUser() != null ? sighting.getUser().getUsername() : null,
+            sighting.getUser() != null ? sighting.getUser().getDisplayName() : null
         );
     }
 }
