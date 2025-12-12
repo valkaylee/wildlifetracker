@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Profile – Wildlife Tracker</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/common.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+</head>
+
+<body>
+
+  <!-- NAV BAR -->
+  <div id="navbar"></div>
+
+  <div class="page-container">
+
+    <h2>Edit Profile</h2>
+
+    <div class="settings-box">
+
+      <label>Profile Picture</label>
+      <div class="profile-picture-upload">
+        <img id="profilePicturePreview" src="https://via.placeholder.com/120/FF6B35/FFFFFF?text=User" alt="Profile Picture" class="profile-picture-preview" />
+        <div class="upload-controls">
+          <input type="file" id="profilePictureInput" accept="image/*" style="display: none;" />
+          <button type="button" id="uploadPhotoBtn" class="upload-btn">
+            <span class="material-symbols-rounded">upload</span>
+            Choose Photo
+          </button>
+          <p class="upload-hint">Maximum file size: 5MB</p>
+        </div>
+      </div>
+
+      <label>Display Name</label>
+      <input id="displayNameInput" type="text" placeholder="Enter your display name" />
+
+      <label>Bio / Description</label>
+      <textarea id="bioInput" placeholder="Tell us about yourself..."></textarea>
+
+      <div class="action-row">
+        <button onclick="saveProfile()" class="save-btn">
+          <span class="material-symbols-rounded">save</span>
+          Save Profile
+        </button>
+        <button onclick="window.location.href='profile.html'" class="cancel-btn">
+          <span class="material-symbols-rounded">close</span>
+          Cancel
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOAD NAVBAR -->
+  <script>
+    fetch("navbar.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("navbar").innerHTML = html;
+
+        const page = location.pathname.split("/").pop() || "landing.html";
+        const links = document.querySelectorAll(".side-nav a");
+
+        links.forEach(link => {
+          if (link.getAttribute("href") === page) {
+            link.classList.add("active");
+          }
+        });
+
+        /* ========== LOGIN / LOGOUT BUTTONS ========== */
+        const loginBtn = document.getElementById("loginBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const loggedIn = localStorage.getItem("loggedIn") === "true";
+
+        // Hide/show profile link based on login state
+        const profileLink = document.querySelector('.side-nav a[href="profile.html"]');
+        
+        if (loggedIn) {
+          loginBtn.style.display = "none";
+          logoutBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "flex";
+          logoutBtn.onclick = () => {
+            localStorage.setItem("loggedIn", "false");
+            location.href = "login.html";
+          };
+        } else {
+          logoutBtn.style.display = "none";
+          loginBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "none";
+          loginBtn.onclick = () => {
+            location.href = "login.html";
+          };
+        }
+      });
+  </script>
+
+  <script>
+    const API_BASE = 'http://localhost:8080/api';
+
+    function getCurrentUserId() {
+      return localStorage.getItem('userId') || '1';
+    }
+
+    // Load current profile data
+    async function loadCurrentProfile() {
+      try {
+        const userId = getCurrentUserId();
+        const response = await fetch(`${API_BASE}/users/${userId}`);
+        if (!response.ok) throw new Error('Failed to load profile');
+        
+        const userData = await response.json();
+        
+        document.getElementById('displayNameInput').value = userData.displayName || '';
+        document.getElementById('bioInput').value = userData.bio || '';
+        
+        if (userData.profilePictureUrl) {
+          document.getElementById('profilePicturePreview').src = userData.profilePictureUrl;
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    }
+
+    // Handle profile picture upload
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCurrentProfile();
+
+      const uploadBtn = document.getElementById('uploadPhotoBtn');
+      const fileInput = document.getElementById('profilePictureInput');
+      const preview = document.getElementById('profilePicturePreview');
+
+      uploadBtn.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+          alert('Please select an image file');
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image must be smaller than 5MB');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Save profile
+    async function saveProfile() {
+      const displayName = document.getElementById('displayNameInput').value.trim();
+      const bio = document.getElementById('bioInput').value.trim();
+      const profilePicturePreview = document.getElementById('profilePicturePreview');
+      const profilePictureUrl = profilePicturePreview.src.startsWith('data:') ? profilePicturePreview.src : null;
+
+      try {
+        const userId = getCurrentUserId();
+        const updateData = {};
+        
+        if (displayName) updateData.displayName = displayName;
+        if (bio) updateData.bio = bio;
+        if (profilePictureUrl) updateData.profilePictureUrl = profilePictureUrl;
+
+        const response = await fetch(`${API_BASE}/users/${userId}/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateData)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update profile');
+        }
+
+        alert('Profile updated successfully!');
+        window.location.href = 'profile.html';
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Failed to update profile. Please try again.');
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin Dashboard – Wildlife Tracker</title>
+  <title>Statistics – Wildlife Tracker</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
@@ -26,18 +26,8 @@
         <span class="material-symbols-rounded logo-icon">menu_book</span>
         <div class="header-text">
           <h1>USC Wildlife Tracker</h1>
-          <p class="header-subtitle">Admin Dashboard</p>
+          <p class="header-subtitle">Campus Statistics</p>
         </div>
-      </div>
-      <div class="header-right">
-        <div class="admin-badge">
-          <span class="material-symbols-rounded">person</span>
-          <span>Admin</span>
-        </div>
-        <button class="logout-btn" onclick="handleLogout()">
-          <span>Logout</span>
-          <span class="material-symbols-rounded">logout</span>
-        </button>
       </div>
     </div>
 
@@ -144,12 +134,11 @@
                 <th>Date</th>
                 <th>Time</th>
                 <th>User</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="sightingsTableBody">
               <tr>
-                <td colspan="6" class="empty-message">Loading sightings...</td>
+                <td colspan="5" class="empty-message">Loading sightings...</td>
               </tr>
             </tbody>
           </table>
@@ -181,9 +170,13 @@
         const logoutBtn = document.getElementById("logoutBtn");
         const loggedIn = localStorage.getItem("loggedIn") === "true";
 
+        // Hide/show profile link based on login state
+        const profileLink = document.querySelector('.side-nav a[href="profile.html"]');
+        
         if (loggedIn) {
           loginBtn.style.display = "none";
           logoutBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "flex";
           logoutBtn.onclick = () => {
             localStorage.setItem("loggedIn", "false");
             location.href = "login.html";
@@ -191,6 +184,7 @@
         } else {
           logoutBtn.style.display = "none";
           loginBtn.style.display = "flex";
+          if (profileLink) profileLink.style.display = "none";
           loginBtn.onclick = () => {
             location.href = "login.html";
           };
