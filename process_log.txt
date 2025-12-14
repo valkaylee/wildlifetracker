@@ -166,3 +166,54 @@ Created UserDTO without password field and updated controllers:
 javareturn ResponseEntity.ok(new UserDTO(created));
 Explanation (Depth)
 BCrypt provides one-way hashing with automatic salting to prevent rainbow table attacks. DTO pattern ensures passwords never appear in API responses, following security best practices for authentication systems.
+
+Sean Harbison's AI Log: 
+1. Prompt (Clarity)
+“Spring Boot server starts successfully, but all API routes return 404 errors. What could be causing this?”
+
+Issues (Specificity)
+The backend application was running without errors, but visiting localhost:8080 or API endpoints such as 
+/api/notifications resulted in Whitelabel 404 pages. This made it unclear whether the controllers were being 
+detected or if the server itself was misconfigured.
+
+Fix (Correctness)
+Verified that all controllers were annotated correctly and mapped under /api/*, and confirmed that Spring 
+Boot does not serve a default homepage unless one is explicitly defined. After testing endpoints directly
+(e.g. /api/notifications), the routes responded as expected.
+
+Explanation (Depth)
+Spring Boot applications can run successfully while still returning 404 errors if no controller matches 
+a given path. Understanding this distinction helped confirm that the server and routing were functioning 
+correctly and that the issue was simply expected framework behavior.
+
+2. Prompt (Clarity)
+“How should I properly handle Optional return values from Spring Data JPA repositories?”
+
+Issues (Specificity)
+Repository methods returned Optional<T>, but the service layer attempted to use them as concrete 
+objects. This caused type-safety warnings and runtime errors when records were missing from the database.
+
+Fix (Correctness)
+Updated service methods to explicitly unwrap Optional<T> and throw a controlled exception when data was 
+not found: 
+	return repository.findById(id)
+    	.orElseThrow(() -> new RuntimeException("Entity not found"));
+
+Explanation (Depth)
+Properly handling Optional improves code safety and makes error cases explicit. This ensured 
+predictable API behavior and prevented silent failures or null pointer issues.
+
+3. Prompt (Clarity)
+“How can I remove database credentials from a GitHub repository but keep them locally for development?”
+
+Issues (Specificity)
+The application.properties file containing MySQL usernames and passwords had been committed to the 
+repository creating a security risk for a shared team project.
+
+Fix (Correctness)
+Removed the file from Git tracking, added it to .gitignore, and committed an application-example.properties
+template so teammates could configure their own local databases without exposing credentials.
+
+Explanation (Depth)
+This approach follows standard industry practices for secret management. It protected sensitive information 
+while keeping the project easy to set up for other developers.
